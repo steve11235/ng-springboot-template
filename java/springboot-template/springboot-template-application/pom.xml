@@ -2,20 +2,16 @@
 	xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.fusionalliance.internal</groupId>
-	<artifactId>shared-springboot</artifactId>
-	<version>1.0.0</version>
-	<name>Shared Spring Boot classes</name>
+	<parent>
+		<groupId>com.fusionalliance.internal</groupId>
+		<artifactId>springboot-template-pom</artifactId>
+		<version>1.0.0</version>
+	</parent>
 
-	<properties>
-		<java.version>1.8</java.version>
-		<maven.compiler.source>${java.version}</maven.compiler.source>
-		<maven.compiler.target>${java.version}</maven.compiler.target>
-	</properties>
-
+	<artifactId>springboot-template-application</artifactId>
+	
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -30,17 +26,30 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<groupId>com.fusionalliance.internal</groupId>
+			<artifactId>springboot-template-service</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fusionalliance.internal</groupId>
-			<artifactId>shared-utility</artifactId>
+			<artifactId>jwt-provider</artifactId>
 			<version>1.0.0</version>
 		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>

@@ -5,11 +5,11 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.fusionalliance.internal.interview</groupId>
+	<groupId>com.fusionalliance.internal</groupId>
 	<artifactId>dependency-management</artifactId>
 	<version>1.0.0</version>
 	<name>Maven dependency management</name>
-	<description>Hold version information for referenced artifacts</description>
+	<description>Updated April 2018</description>
 
 	<properties>
 		<spring-boot.version>2.0.0.RELEASE</spring-boot.version>
@@ -18,7 +18,6 @@
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 	</properties>
 
-	<!-- Updated April 2018 -->
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
