@@ -1,0 +1,50 @@
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.fusionalliance.internal.interview</groupId>
+	<artifactId>heroku-deployer</artifactId>
+	<version>1.0.0</version>
+	<name>Heroku Deployer</name>
+
+	<properties>
+		<target.groupId>com.fusionalliance.internal</target.groupId>
+		<target.artifactId>ng-springboot-template</target.artifactId>
+		<target.version>1.0.0</target.version>
+		<target.appName>ng-springboot-template-rs</target.appName>
+		
+		<java.version>1.8</java.version>
+		<maven.compiler.source>${java.version}</maven.compiler.source>
+		<maven.compiler.target>${java.version}</maven.compiler.target>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.heroku.sdk</groupId>
+				<artifactId>heroku-maven-plugin</artifactId>
+				<version>2.0.3</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<appName>${target.appName}</appName>
+					<includeTarget>false</includeTarget>
+					<includes>
+						<include>target/dependency/${target.artifactId}-${target.version}.jar</include>
+					</includes>
+					<processTypes>
+						<web>java $JAVA_OPTS -Dserver.port=$PORT -jar target/dependency/${target.artifactId}-${target.version}.jar</web>
+					</processTypes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<dependencies>
+		<dependency>
+			<groupId>${target.groupId}</groupId>
+			<artifactId>${target.artifactId}</artifactId>
+			<version>${target.version}</version>
+		</dependency>
+	</dependencies>
+</project>

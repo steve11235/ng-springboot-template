@@ -1,0 +1,28 @@
+html, body {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+    padding: 0;
+    height: 100%;
+}
+
+div.flex-fixed {
+    flex-grow: 0;
+    flex-shrink: 0;
+    background-color: white;
+}
+
+div.flex-fill {
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 1;
+    overflow: auto;
+    
+    background-color: white;
+}
+
+header {
+    margin: .5em 0 .25em 0;
+}
