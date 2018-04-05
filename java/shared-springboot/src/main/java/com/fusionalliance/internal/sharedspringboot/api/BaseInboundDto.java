@@ -5,12 +5,14 @@
  */
 package com.fusionalliance.internal.sharedspringboot.api;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * This class is the base for all inbound DTO classes; these together define the inbound API exposed by the application.
  * 
  * @see BaseDto
  */
-public abstract class BaseInboundDto<T extends BaseInboundDto<?>> extends BaseDto<T> {
+public abstract class BaseInboundDto<T extends BaseInboundDto<?, ?>, R extends RequestTypeHolder> extends BaseDto<T> {
 
 	public static final String LIST = "LIST";
 	public static final String GET = "GET";
@@ -19,17 +21,42 @@ public abstract class BaseInboundDto<T extends BaseInboundDto<?>> extends BaseDt
 	public static final String DELETE = "delete";
 
 	/** Required, must be one the constant values, used for validation */
-	private transient String requestType;
+	private transient R requestTypeHolder;
 
-	protected final String getRequestType() {
-		return requestType;
+	/**
+	 * Get the request type. This is a convenience getter that safely retrieves the request type from the holder.
+	 * <p>
+	 * It returns EMPTY if the holder was not set to avoid null exceptions during validation. Note that {@link #validate()} will add an error message
+	 * in this case.
+	 * 
+	 * @return never null
+	 */
+	public String getRequestType() {
+		if (requestTypeHolder == null) {
+			return StringUtils.EMPTY;
+		}
+
+		return requestTypeHolder.getRequestType();
 	}
 
-	public final T requestType(String requestTypeParm) {
+	public final R getRequestTypeHolder() {
+		return requestTypeHolder;
+	}
+
+	public final T requestTypeHolder(final R requestTypeHolderParm) {
 		checkNotBuilt();
 
-		requestType = requestTypeParm;
+		requestTypeHolder = requestTypeHolderParm;
 
 		return fetchThisAsT();
+	}
+
+	@Override
+	public void validate() {
+		super.validate();
+
+		if (requestTypeHolder == null) {
+			addValidationError("The request type holder is missing.");
+		}
 	}
 }

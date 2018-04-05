@@ -1,8 +1,8 @@
 com\fusionalliance\internal\jwt\shared\SecretContainer$SecretInfo.class
-com\fusionalliance\internal\jwt\api\JwtOutboundDto.class
 com\fusionalliance\internal\jwt\api\AuthorizationInboundDto.class
 com\fusionalliance\internal\jwt\filter\JwtAuthenticationFilter.class
 com\fusionalliance\internal\jwt\business\JwtImpl.class
 com\fusionalliance\internal\jwt\service\JwtProviderController.class
 com\fusionalliance\internal\jwt\shared\SecretContainer.class
+com\fusionalliance\internal\jwt\api\AuthorizationOutboundDto.class
 com\fusionalliance\internal\jwt\business\AuthorizationProcessor.class

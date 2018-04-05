@@ -1,7 +1,7 @@
 C:\Users\spage\workspaces\ng-springboot-template\java\jwt-provider\src\main\java\com\fusionalliance\internal\jwt\business\JwtImpl.java
+C:\Users\spage\workspaces\ng-springboot-template\java\jwt-provider\src\main\java\com\fusionalliance\internal\jwt\api\AuthorizationOutboundDto.java
 C:\Users\spage\workspaces\ng-springboot-template\java\jwt-provider\src\main\java\com\fusionalliance\internal\jwt\shared\SecretContainer.java
 C:\Users\spage\workspaces\ng-springboot-template\java\jwt-provider\src\main\java\com\fusionalliance\internal\jwt\api\AuthorizationInboundDto.java
-C:\Users\spage\workspaces\ng-springboot-template\java\jwt-provider\src\main\java\com\fusionalliance\internal\jwt\api\JwtOutboundDto.java
 C:\Users\spage\workspaces\ng-springboot-template\java\jwt-provider\src\main\java\com\fusionalliance\internal\jwt\business\AuthorizationProcessor.java
 C:\Users\spage\workspaces\ng-springboot-template\java\jwt-provider\src\main\java\com\fusionalliance\internal\jwt\service\JwtProviderController.java
 C:\Users\spage\workspaces\ng-springboot-template\java\jwt-provider\src\main\java\com\fusionalliance\internal\jwt\filter\JwtAuthenticationFilter.java

@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.fusionalliance.internal.sharedspringboot.api.BaseOutboundDto;
 
-public class JwtOutboundDto extends BaseOutboundDto<JwtOutboundDto> {
+public class AuthorizationOutboundDto extends BaseOutboundDto<AuthorizationOutboundDto> {
 
 	/** Login identifier */
 	private String login;
@@ -77,7 +77,7 @@ public class JwtOutboundDto extends BaseOutboundDto<JwtOutboundDto> {
 		return jwt;
 	}
 
-	public JwtOutboundDto login(final String loginParm) {
+	public AuthorizationOutboundDto login(final String loginParm) {
 		checkNotBuilt();
 
 		login = loginParm;
@@ -85,7 +85,7 @@ public class JwtOutboundDto extends BaseOutboundDto<JwtOutboundDto> {
 		return fetchThisAsT();
 	}
 
-	public JwtOutboundDto name(final String nameParm) {
+	public AuthorizationOutboundDto name(final String nameParm) {
 		checkNotBuilt();
 
 		name = nameParm;
@@ -93,7 +93,7 @@ public class JwtOutboundDto extends BaseOutboundDto<JwtOutboundDto> {
 		return fetchThisAsT();
 	}
 
-	public JwtOutboundDto admin(final boolean adminParm) {
+	public AuthorizationOutboundDto admin(final boolean adminParm) {
 		checkNotBuilt();
 
 		admin = adminParm;
@@ -101,7 +101,7 @@ public class JwtOutboundDto extends BaseOutboundDto<JwtOutboundDto> {
 		return fetchThisAsT();
 	}
 
-	public JwtOutboundDto exp(final long expParm) {
+	public AuthorizationOutboundDto exp(final long expParm) {
 		checkNotBuilt();
 
 		exp = expParm;
@@ -109,7 +109,7 @@ public class JwtOutboundDto extends BaseOutboundDto<JwtOutboundDto> {
 		return fetchThisAsT();
 	}
 
-	public JwtOutboundDto jwt(final String jwtParm) {
+	public AuthorizationOutboundDto jwt(final String jwtParm) {
 		checkNotBuilt();
 
 		jwt = jwtParm;

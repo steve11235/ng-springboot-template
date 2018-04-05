@@ -9,12 +9,11 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import com.fusionalliance.internal.jwt.api.AuthorizationInboundDto;
-import com.fusionalliance.internal.jwt.api.JwtOutboundDto;
+import com.fusionalliance.internal.jwt.api.AuthorizationOutboundDto;
 import com.fusionalliance.internal.jwt.shared.SecretContainer;
 import com.fusionalliance.internal.jwt.shared.SecretContainer.SecretInfo;
 import com.fusionalliance.internal.sharedspringboot.SpringContextHelper;
 import com.fusionalliance.internal.sharedspringboot.api.BaseOutboundDto;
-import com.fusionalliance.internal.sharedspringboot.api.MessagesOnlyOutboundDto;
 import com.fusionalliance.internal.sharedspringboot.business.BusinessProcessor;
 import com.fusionalliance.internal.sharedutility.application.ApplicationException;
 import com.fusionalliance.internal.sharedutility.jwt.JwtException;
@@ -25,7 +24,7 @@ public class AuthorizationProcessor extends BusinessProcessor<AuthorizationInbou
 
 	private static final int EXPIRATION_SECONDS = 30 * 60;
 
-	public AuthorizationProcessor(AuthorizationInboundDto inboundDtoParm) {
+	public AuthorizationProcessor(final AuthorizationInboundDto inboundDtoParm) {
 		super(inboundDtoParm);
 	}
 
@@ -37,14 +36,14 @@ public class AuthorizationProcessor extends BusinessProcessor<AuthorizationInbou
 		try {
 			userInfoMap = retrieveUserInfo(inboundDto.getLogin(), inboundDto.getCreds());
 		}
-		catch (Exception e) {
+		catch (final Exception e) {
 			throw new ApplicationException("Unable to access database.", e);
 		}
 
 		if (userInfoMap == null) {
 			MessageManager.addError("Unable to authenticate user login: " + inboundDto.getLogin());
 
-			return new MessagesOnlyOutboundDto();
+			throw new ApplicationException("Unable to authenticate");
 		}
 
 		final SecretContainer secretContainer = SpringContextHelper.getBeanByClass(SecretContainer.class);
@@ -60,13 +59,13 @@ public class AuthorizationProcessor extends BusinessProcessor<AuthorizationInbou
 					.secretId(secretInfo.getSecretId()) //
 					.build();
 		}
-		catch (JwtException e) {
+		catch (final JwtException e) {
 			throw new ApplicationException("Unexpected JWT error: " + e.getMessage());
 		}
 
 		final String jwt = JwtUtility.buildToken(jwtImpl.getPayload(), secretInfo.getSecret());
 
-		final BaseOutboundDto<?> outboundDto = new JwtOutboundDto() //
+		final BaseOutboundDto<?> outboundDto = new AuthorizationOutboundDto() //
 				.admin(jwtImpl.isAdmin()) //
 				.exp(jwtImpl.getExpires()) //
 				.jwt(jwt) //
@@ -83,14 +82,14 @@ public class AuthorizationProcessor extends BusinessProcessor<AuthorizationInbou
 	 * Retrieve user info from the Interviewer table.
 	 * <p>
 	 * Results are returned in a Map with two entries, "name" and "admin". "admin" is "true" or "false".
-	 * 
+	 *
 	 * @param loginParm
 	 * @param credsParm
 	 * @return null if an active Interviewer is not found
 	 * @throws Exception
 	 *             if unable to access the user info
 	 */
-	private Map<String, String> retrieveUserInfo(String loginParm, String credsParm) throws Exception {
+	private Map<String, String> retrieveUserInfo(final String loginParm, final String credsParm) throws Exception {
 		final DataSource dataSource = SpringContextHelper.getBeanByName("postgreSqlDataSource", DataSource.class);
 
 		try (

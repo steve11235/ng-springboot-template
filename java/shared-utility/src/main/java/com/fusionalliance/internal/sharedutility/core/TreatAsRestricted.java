@@ -11,12 +11,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This annotation indicates that a type or method should be treated as protected.
- * <p>
- * Typically, the type or method will have public scope but only to allow subclasses of a base class in different packages to access it.
+ * This annotation indicates that a type or method should only be accessed by specific callers.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.TYPE, ElementType.METHOD })
-public @interface TreatAsProtected {
+public @interface TreatAsRestricted {
 	String value();
 }

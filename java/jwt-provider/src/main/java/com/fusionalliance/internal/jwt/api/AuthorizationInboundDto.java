@@ -3,8 +3,12 @@ package com.fusionalliance.internal.jwt.api;
 import org.apache.commons.lang3.StringUtils;
 
 import com.fusionalliance.internal.sharedspringboot.api.BaseInboundDto;
+import com.fusionalliance.internal.sharedspringboot.api.RequestTypeHolder;
 
-public class AuthorizationInboundDto extends BaseInboundDto<AuthorizationInboundDto> {
+/**
+ * This class implements an inbound DTO for authorization requests. Note that only the GET request type is allowed.
+ */
+public class AuthorizationInboundDto extends BaseInboundDto<AuthorizationInboundDto, RequestTypeHolder> {
 	private String login;
 	private String creds;
 
@@ -12,8 +16,14 @@ public class AuthorizationInboundDto extends BaseInboundDto<AuthorizationInbound
 	public void validate() {
 		super.validate();
 
-		validateLogin();
-		validateCreds();
+		if (getRequestType().equals(RequestTypeHolder.GET)) {
+			validateLogin();
+			validateCreds();
+
+			return;
+		}
+
+		addValidationError("Invalid request type: " + getRequestType());
 	}
 
 	private void validateLogin() {
