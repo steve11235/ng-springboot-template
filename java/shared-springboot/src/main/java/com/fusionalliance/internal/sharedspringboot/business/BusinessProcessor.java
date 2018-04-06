@@ -21,13 +21,13 @@ import com.fusionalliance.internal.sharedutility.messagemanager.MessageManager;
  * <p>
  * Instances of implementing classes are stateful and not thread safe.
  * 
- * @param <TI>
+ * @param <T>
  *            the type of the inbound DTO
  */
-public abstract class BusinessProcessor<TI extends BaseInboundDto<?, ?>> {
+public abstract class BusinessProcessor<T extends BaseInboundDto<?>> {
 	private static final Logger LOG = LoggerFactory.getLogger(BusinessProcessor.class);
 
-	private final TI inboundDto;
+	private final T inboundDto;
 
 	/**
 	 * Constructor
@@ -35,7 +35,7 @@ public abstract class BusinessProcessor<TI extends BaseInboundDto<?, ?>> {
 	 * @param inboundDtoParm
 	 *            required
 	 */
-	public BusinessProcessor(final TI inboundDtoParm) {
+	public BusinessProcessor(final T inboundDtoParm) {
 		ValidationUtility.checkObjectNotNull("Inbound DTO is required.", inboundDtoParm);
 
 		inboundDto = inboundDtoParm;
@@ -107,7 +107,7 @@ public abstract class BusinessProcessor<TI extends BaseInboundDto<?, ?>> {
 		return outboundDto;
 	}
 
-	protected TI getInboundDto() {
+	protected T getInboundDto() {
 		return inboundDto;
 	}
 }

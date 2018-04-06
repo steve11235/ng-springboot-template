@@ -8,7 +8,8 @@ import com.fusionalliance.internal.sharedspringboot.api.RequestTypeHolder;
 /**
  * This class implements an inbound DTO for authorization requests. Note that only the GET request type is allowed.
  */
-public class AuthorizationInboundDto extends BaseInboundDto<AuthorizationInboundDto, RequestTypeHolder> {
+public class AuthorizationInboundDto extends BaseInboundDto<AuthorizationInboundDto> {
+
 	private String login;
 	private String creds;
 
@@ -51,7 +52,7 @@ public class AuthorizationInboundDto extends BaseInboundDto<AuthorizationInbound
 
 		login = loginParm;
 
-		return fetchThisAsT();
+		return this;
 	}
 
 	public AuthorizationInboundDto creds(final String credsParm) {
@@ -59,6 +60,6 @@ public class AuthorizationInboundDto extends BaseInboundDto<AuthorizationInbound
 
 		creds = credsParm;
 
-		return fetchThisAsT();
+		return this;
 	}
 }

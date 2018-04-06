@@ -6,11 +6,11 @@
 package com.fusionalliance.internal.sharedspringboot.api;
 
 /**
- * This DTO class contains only a Messages instance inherited from BaseOutboundDto.
+ * This class implements an outbound DTO that contains only a Messages instance inherited from BaseOutboundDto.
  * <p>
  * Typical usage is when an incoming request contains invalid information and cannot generate a full response.
  */
-public class MessagesOnlyOutboundDto extends BaseOutboundDto<MessagesOnlyOutboundDto> {
+public final class MessagesOnlyOutboundDto extends BaseOutboundDto<MessagesOnlyOutboundDto> {
 
 	@Override
 	public void validate() {

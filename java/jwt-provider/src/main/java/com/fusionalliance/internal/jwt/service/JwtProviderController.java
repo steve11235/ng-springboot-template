@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fusionalliance.internal.jwt.api.AuthorizationInboundDto;
 import com.fusionalliance.internal.jwt.business.AuthorizationProcessor;
 import com.fusionalliance.internal.sharedspringboot.api.BaseOutboundDto;
+import com.fusionalliance.internal.sharedspringboot.api.RequestTypeHolder;
 import com.fusionalliance.internal.sharedspringboot.service.BaseController;
 import com.fusionalliance.internal.sharedspringboot.transaction.TransactionLayer;
 import com.fusionalliance.internal.sharedspringboot.transaction.TransactionLayerFacade;
@@ -32,6 +33,7 @@ public class JwtProviderController extends BaseController {
 		MessageManager.initialize();
 
 		final AuthorizationInboundDto inboundDto = new AuthorizationInboundDto() //
+				.requestTypeHolder(new RequestTypeHolder(RequestTypeHolder.GET)) //
 				.login(loginParm) //
 				.creds(credsParm) //
 				.build();

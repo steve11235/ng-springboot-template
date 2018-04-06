@@ -5,7 +5,8 @@
  */
 package com.fusionalliance.internal.sharedspringboot.api;
 
-import com.fusionalliance.internal.sharedutility.core.TreatAsProtected;
+import com.fusionalliance.internal.sharedutility.core.TreatAsRestricted;
+import com.fusionalliance.internal.sharedutility.core.ValidationUtility;
 import com.fusionalliance.internal.sharedutility.messagemanager.Messages;
 
 /**
@@ -23,12 +24,15 @@ public abstract class BaseOutboundDto<T extends BaseOutboundDto<?>> extends Base
 	private Messages messages;
 
 	/**
-	 * Put a Messages instance into the DTO. This method should only be used by service and transaction layer classes.
+	 * Put a Messages instance into the DTO. This method should only be used by service layer classes.
 	 * 
 	 * @param messagesParm
+	 *            required
 	 */
-	@TreatAsProtected("Used by service, transaction layers only")
+	@TreatAsRestricted("Used by service layer only")
 	public final void putMessages(final Messages messagesParm) {
+		ValidationUtility.checkObjectNotNull("Messages is null", messagesParm);
+
 		messages = messagesParm;
 	}
 }

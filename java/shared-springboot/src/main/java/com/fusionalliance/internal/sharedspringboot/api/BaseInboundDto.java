@@ -7,21 +7,17 @@ package com.fusionalliance.internal.sharedspringboot.api;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.fusionalliance.internal.sharedutility.core.GenericCastUtility;
+
 /**
  * This class is the base for all inbound DTO classes; these together define the inbound API exposed by the application.
  * 
  * @see BaseDto
  */
-public abstract class BaseInboundDto<T extends BaseInboundDto<?, ?>, R extends RequestTypeHolder> extends BaseDto<T> {
-
-	public static final String LIST = "LIST";
-	public static final String GET = "GET";
-	public static final String ADD = "add";
-	public static final String UPDATE = "update";
-	public static final String DELETE = "delete";
+public abstract class BaseInboundDto<T extends BaseInboundDto<?>> extends BaseDto<T> {
 
 	/** Required, must be one the constant values, used for validation */
-	private transient R requestTypeHolder;
+	private transient RequestTypeHolder requestTypeHolder;
 
 	/**
 	 * Get the request type. This is a convenience getter that safely retrieves the request type from the holder.
@@ -31,7 +27,7 @@ public abstract class BaseInboundDto<T extends BaseInboundDto<?, ?>, R extends R
 	 * 
 	 * @return never null
 	 */
-	public String getRequestType() {
+	public final String getRequestType() {
 		if (requestTypeHolder == null) {
 			return StringUtils.EMPTY;
 		}
@@ -39,16 +35,12 @@ public abstract class BaseInboundDto<T extends BaseInboundDto<?, ?>, R extends R
 		return requestTypeHolder.getRequestType();
 	}
 
-	public final R getRequestTypeHolder() {
-		return requestTypeHolder;
-	}
-
-	public final T requestTypeHolder(final R requestTypeHolderParm) {
+	public final T requestTypeHolder(final RequestTypeHolder requestTypeHolderParm) {
 		checkNotBuilt();
 
 		requestTypeHolder = requestTypeHolderParm;
 
-		return fetchThisAsT();
+		return GenericCastUtility.cast(this);
 	}
 
 	@Override

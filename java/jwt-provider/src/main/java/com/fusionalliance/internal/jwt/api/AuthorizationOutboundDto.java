@@ -82,7 +82,7 @@ public class AuthorizationOutboundDto extends BaseOutboundDto<AuthorizationOutbo
 
 		login = loginParm;
 
-		return fetchThisAsT();
+		return this;
 	}
 
 	public AuthorizationOutboundDto name(final String nameParm) {
@@ -90,7 +90,7 @@ public class AuthorizationOutboundDto extends BaseOutboundDto<AuthorizationOutbo
 
 		name = nameParm;
 
-		return fetchThisAsT();
+		return this;
 	}
 
 	public AuthorizationOutboundDto admin(final boolean adminParm) {
@@ -98,7 +98,7 @@ public class AuthorizationOutboundDto extends BaseOutboundDto<AuthorizationOutbo
 
 		admin = adminParm;
 
-		return fetchThisAsT();
+		return this;
 	}
 
 	public AuthorizationOutboundDto exp(final long expParm) {
@@ -106,7 +106,7 @@ public class AuthorizationOutboundDto extends BaseOutboundDto<AuthorizationOutbo
 
 		exp = expParm;
 
-		return fetchThisAsT();
+		return this;
 	}
 
 	public AuthorizationOutboundDto jwt(final String jwtParm) {
@@ -114,6 +114,6 @@ public class AuthorizationOutboundDto extends BaseOutboundDto<AuthorizationOutbo
 
 		jwt = jwtParm;
 
-		return fetchThisAsT();
+		return this;
 	}
 }

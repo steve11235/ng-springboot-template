@@ -8,6 +8,7 @@ package com.fusionalliance.internal.sharedspringboot.api;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fusionalliance.internal.sharedutility.core.GenericCastUtility;
 import com.fusionalliance.internal.sharedutility.core.TreatAsProtected;
 import com.fusionalliance.internal.sharedutility.core.ValidationUtility;
 
@@ -19,11 +20,12 @@ import com.fusionalliance.internal.sharedutility.core.ValidationUtility;
  * <p>
  * By convention, all implementations should
  * <ul>
- * <li>use Javadoc to annotate all fields as required or optional; indicate optional field defaults if not null</li>
+ * <li>be marked as final (all implementations are closed for further extension)
  * <li>use fluent setters and build()</li>
  * <li>override the validate() method, calling super.validate() at the beginning of the method</li>
  * <li>use the validate method to ensure that required fields are populated, supply any default values to optional fields that were not supplied, and
  * verify that all fields contain reasonable values</li>
+ * </ul>
  */
 public abstract class BaseDto<T extends BaseDto<?>> {
 	/** List of error messages generated during validation; no messages means validation was successful */
@@ -39,7 +41,7 @@ public abstract class BaseDto<T extends BaseDto<?>> {
 
 		validate();
 
-		return fetchThisAsT();
+		return GenericCastUtility.cast(this);
 	}
 
 	public final boolean isValidationErrors() {
@@ -53,7 +55,7 @@ public abstract class BaseDto<T extends BaseDto<?>> {
 	/**
 	 * Check that the instance is not built.
 	 * <p>
-	 * All fluent setters should call this method first thing.
+	 * All fluent setters should call this method first.
 	 * 
 	 * @throws IllegalUpdateException
 	 */
@@ -80,7 +82,9 @@ public abstract class BaseDto<T extends BaseDto<?>> {
 	}
 
 	/**
-	 * Validate child inbound DTO, i.e., those defined as fields of this class, add their validation errors to this class' validation errors.
+	 * Validate child DTO, i.e., those defined as fields of the main class, and add their validation errors to this class' validation errors.
+	 * <p>
+	 * This ensures that the main class' error list contains all errors.
 	 * 
 	 * @param childInboundDtoParm
 	 */
@@ -106,15 +110,5 @@ public abstract class BaseDto<T extends BaseDto<?>> {
 		ValidationUtility.checkStringNotBlank("The validation error message is blank.", validationErrorParm);
 
 		validationErrors.add(validationErrorParm);
-	}
-
-	/**
-	 * Return this as type T. This is used by fluent setters and build.
-	 * 
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	protected T fetchThisAsT() {
-		return (T) this;
 	}
 }

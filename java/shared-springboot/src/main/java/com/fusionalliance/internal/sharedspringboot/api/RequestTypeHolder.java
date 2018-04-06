@@ -1,11 +1,11 @@
 package com.fusionalliance.internal.sharedspringboot.api;
 
-import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
 import com.fusionalliance.internal.sharedutility.core.ValidationUtility;
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 
 /**
  * This class acts as a holder for a request type. The primary use of this class is {@link BaseInboundDto}, where it allows
@@ -23,7 +23,7 @@ public class RequestTypeHolder {
 	public static final String UPDATE = "UPDATE";
 	public static final String DELETE = "DELETE";
 
-	public static List<String> requestTypes = ImmutableList.of(LIST, GET, ADD, UPDATE, DELETE);
+	private static final Set<String> REQUEST_TYPES = ImmutableSet.of(LIST, GET, ADD, UPDATE, DELETE);
 
 	private final String requestType;
 
@@ -52,7 +52,7 @@ public class RequestTypeHolder {
 	protected boolean isKnownRequestType(String requestTypeParm) {
 		ValidationUtility.checkBadConditionNotMet("Request type is null.", StringUtils.isBlank(requestTypeParm));
 
-		return requestTypes.contains(requestTypeParm);
+		return REQUEST_TYPES.contains(requestTypeParm);
 	}
 
 	public final String getRequestType() {
