@@ -15,10 +15,10 @@ import javax.persistence.Entity;
  */
 public interface PersistenceEntity {
 	/**
-	 * Return true if the internal state of the entity is valid. Add error messages as needed to MessageManager.
+	 * Return true if the internal state of the entity is valid. Add error messages to MessageManager to inform the caller of the nature of issues.
 	 * <p>
-	 * Validate as much of the state as practicable; do not stop validating on the first problem. This provides more information to the client,
-	 * helping to avoid multiple error responses.
+	 * Do not stop validating on the first error; validate as much of the state as practicable. This provides more information to the caller, helping
+	 * to avoid multiple error responses.
 	 * <p>
 	 * Ensure the entity name appears prominently in the messages; the client should be able to clearly identify which entity is invalid.
 	 * <p>

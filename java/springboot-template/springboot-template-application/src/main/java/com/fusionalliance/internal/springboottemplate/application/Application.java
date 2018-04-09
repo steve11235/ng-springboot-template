@@ -41,7 +41,7 @@ import com.fusionalliance.internal.sharedspringboot.SpringContextHelper;
 		JpaRepositoriesAutoConfiguration.class //
 })
 @ComponentScan
-@ServletComponentScan
+@ServletComponentScan(basePackages = "com.fusionalliance.internal.springboottemplate.service")
 @EnableTransactionManagement()
 public class Application {
 	public static void main(final String... args) throws Exception {

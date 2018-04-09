@@ -13,7 +13,7 @@ import java.util.TreeSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fusionalliance.internal.sharedutility.core.StackFrameInformationUtility;
+import com.fusionalliance.internal.sharedutility.core.LoggerUtility;
 import com.fusionalliance.internal.sharedutility.messagemanager.Message.Severity;
 
 /**
@@ -83,7 +83,7 @@ public final class Messages {
 		final String text;
 
 		if (messageTextParm == null) {
-			LOG.warn("Null message passed to MessageManager." + StackFrameInformationUtility.retrieveCallerInformation());
+			LOG.warn("Null message passed to MessageManager." + LoggerUtility.retrieveCallerInformation());
 
 			return "";
 		}
@@ -97,7 +97,7 @@ public final class Messages {
 		}
 		catch (final Exception e) {
 			LOG.warn("Unable to format message: " + messageTextParm + ". " + e.getMessage()
-					+ StackFrameInformationUtility.retrievePartialStackTrace(e));
+					+ LoggerUtility.retrievePartialStackTrace(e));
 
 			return messageTextParm;
 		}

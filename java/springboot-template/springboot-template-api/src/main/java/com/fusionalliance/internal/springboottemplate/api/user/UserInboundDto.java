@@ -24,7 +24,7 @@ import com.fusionalliance.internal.sharedspringboot.api.RequestTypeHolder;
  * <th>UPDATE_CREDS</th>
  * </tr>
  * <tr>
- * <td>userId</td>
+ * <td>userKey</td>
  * <td>required</td>
  * <td>required</td>
  * <td>required</td>
@@ -60,7 +60,7 @@ import com.fusionalliance.internal.sharedspringboot.api.RequestTypeHolder;
  * <td>required</td>
  * </tr>
  * <tr>
- * <td>name</td>
+ * <td>fullName</td>
  * <td>required</td>
  * <td>ignored</td>
  * <td>ignored</td>
@@ -90,15 +90,15 @@ import com.fusionalliance.internal.sharedspringboot.api.RequestTypeHolder;
  */
 public final class UserInboundDto extends BaseInboundDto<UserInboundDto> {
 
-	private long userId;
+	private long userKey;
 	/** Has this user been deactivated? */
 	private boolean deactivated;
 	/** The unique value supplied on the login screen */
 	private String login;
 	/** Hashed password */
 	private String creds;
-	/** Full name */
-	private String name;
+	/** Full fullName */
+	private String fullName;
 	private String description;
 	private boolean admin;
 
@@ -112,34 +112,34 @@ public final class UserInboundDto extends BaseInboundDto<UserInboundDto> {
 		case RequestTypeHolder.ADD:
 			deactivated = false;
 
-			validateUserId();
+			validateUserKey();
 			validateLogin();
 			validateCreds();
-			validateName();
+			validateFullfullName();
 			validateDescription();
 			break;
 		case RequestTypeHolder.DELETE:
 			deactivated = true;
 
-			validateUserId();
+			validateUserKey();
 			break;
 		case RequestTypeHolder.GET:
-			validateUserId();
+			validateUserKey();
 			break;
 		case RequestTypeHolder.LIST:
 			break;
 		case RequestTypeHolder.UPDATE:
-			validateUserId();
+			validateUserKey();
 			validateLogin();
 			validateCreds();
-			validateName();
+			validateFullfullName();
 			validateDescription();
 			break;
 		case UserRequestTypeHolder.UPDATE_CREDS:
-			validateUserId();
+			validateUserKey();
 			validateLogin();
 			validateCreds();
-			validateName();
+			validateFullfullName();
 			validateDescription();
 			break;
 		default:
@@ -149,8 +149,8 @@ public final class UserInboundDto extends BaseInboundDto<UserInboundDto> {
 		}
 	}
 
-	void validateUserId() {
-		if (userId <= 0) {
+	void validateUserKey() {
+		if (userKey <= 0) {
 			addValidationError("User ID is less than or equal to 0");
 		}
 	}
@@ -167,9 +167,9 @@ public final class UserInboundDto extends BaseInboundDto<UserInboundDto> {
 		}
 	}
 
-	void validateName() {
-		if (StringUtils.isBlank(name)) {
-			addValidationError("Name is blank");
+	void validateFullfullName() {
+		if (StringUtils.isBlank(fullName)) {
+			addValidationError("FullfullName is blank");
 		}
 	}
 
@@ -179,8 +179,8 @@ public final class UserInboundDto extends BaseInboundDto<UserInboundDto> {
 		}
 	}
 
-	public long getUserId() {
-		return userId;
+	public long getUserKey() {
+		return userKey;
 	}
 
 	public boolean isDeactivated() {
@@ -195,8 +195,8 @@ public final class UserInboundDto extends BaseInboundDto<UserInboundDto> {
 		return creds;
 	}
 
-	public String getName() {
-		return name;
+	public String getFullfullName() {
+		return fullName;
 	}
 
 	public String getDescription() {
@@ -207,10 +207,10 @@ public final class UserInboundDto extends BaseInboundDto<UserInboundDto> {
 		return admin;
 	}
 
-	public UserInboundDto userId(long userIdParm) {
+	public UserInboundDto userKey(long userKeyParm) {
 		checkNotBuilt();
 
-		userId = userIdParm;
+		userKey = userKeyParm;
 
 		return this;
 	}
@@ -239,10 +239,10 @@ public final class UserInboundDto extends BaseInboundDto<UserInboundDto> {
 		return this;
 	}
 
-	public UserInboundDto name(String nameParm) {
+	public UserInboundDto fullName(String fullNameParm) {
 		checkNotBuilt();
 
-		name = nameParm;
+		fullName = fullNameParm;
 
 		return this;
 	}

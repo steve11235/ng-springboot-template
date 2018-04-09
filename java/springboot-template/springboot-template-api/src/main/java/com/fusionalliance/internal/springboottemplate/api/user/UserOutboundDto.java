@@ -14,15 +14,15 @@ import com.fusionalliance.internal.sharedspringboot.api.BaseOutboundDto;
  */
 public class UserOutboundDto extends BaseOutboundDto<UserOutboundDto> {
 
-	private long userId;
+	private long userKey;
 	/** Has this user been deactivated? */
 	private boolean deactivated;
 	/** The unique value supplied on the login screen */
 	private String login;
 	/** Hashed password */
 	private String creds;
-	/** Full name */
-	private String name;
+	/** Full fullName */
+	private String fullName;
 	private String description;
 	private boolean admin;
 
@@ -30,15 +30,15 @@ public class UserOutboundDto extends BaseOutboundDto<UserOutboundDto> {
 	public void validate() {
 		super.validate();
 
-		validateUserId();
+		validateUserKey();
 		validateLogin();
 		validateCreds();
-		validateName();
+		validateFullfullName();
 		validateDescription();
 	}
 
-	void validateUserId() {
-		if (userId <= 0) {
+	void validateUserKey() {
+		if (userKey <= 0) {
 			addValidationError("User ID is less than or equal to 0");
 		}
 	}
@@ -55,9 +55,9 @@ public class UserOutboundDto extends BaseOutboundDto<UserOutboundDto> {
 		}
 	}
 
-	void validateName() {
-		if (StringUtils.isBlank(name)) {
-			addValidationError("Name is blank");
+	void validateFullfullName() {
+		if (StringUtils.isBlank(fullName)) {
+			addValidationError("FullfullName is blank");
 		}
 	}
 
@@ -67,8 +67,8 @@ public class UserOutboundDto extends BaseOutboundDto<UserOutboundDto> {
 		}
 	}
 
-	public long getUserId() {
-		return userId;
+	public long getUserKey() {
+		return userKey;
 	}
 
 	public boolean isDeactivated() {
@@ -83,8 +83,8 @@ public class UserOutboundDto extends BaseOutboundDto<UserOutboundDto> {
 		return creds;
 	}
 
-	public String getName() {
-		return name;
+	public String getFullfullName() {
+		return fullName;
 	}
 
 	public String getDescription() {
@@ -95,10 +95,10 @@ public class UserOutboundDto extends BaseOutboundDto<UserOutboundDto> {
 		return admin;
 	}
 
-	public UserOutboundDto userId(long userIdParm) {
+	public UserOutboundDto userKey(long userKeyParm) {
 		checkNotBuilt();
 
-		userId = userIdParm;
+		userKey = userKeyParm;
 
 		return this;
 	}
@@ -127,10 +127,10 @@ public class UserOutboundDto extends BaseOutboundDto<UserOutboundDto> {
 		return this;
 	}
 
-	public UserOutboundDto name(String nameParm) {
+	public UserOutboundDto fullName(String fullNameParm) {
 		checkNotBuilt();
 
-		name = nameParm;
+		fullName = fullNameParm;
 
 		return this;
 	}
