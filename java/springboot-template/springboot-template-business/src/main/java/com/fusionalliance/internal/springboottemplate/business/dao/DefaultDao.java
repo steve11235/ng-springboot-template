@@ -14,12 +14,12 @@ import org.springframework.stereotype.Service;
 import com.fusionalliance.internal.sharedspringboot.business.BaseHibernateDao;
 
 /**
- * This class provides base DAO support for the sb_template schema. In particular, it implements {@link #retrieveCurrentSession()}. An instance of
- * this class can be used for generic operations. However, entity-specific code should be placed in classes that inject this class, in order to avoid
- * a monolith of low cohesion methods.
+ * This class provides base DAO support for the default session. In particular, it implements {@link #retrieveCurrentSession()}. An instance of this
+ * class can be used for generic operations. However, entity-specific code should be placed in classes that inject this class, in order to avoid a
+ * monolith of low cohesion methods.
  */
-@Service("springBootTemplaeDao")
-public class SpringBootTemplateDao extends BaseHibernateDao {
+@Service("defaultDao")
+public class DefaultDao extends BaseHibernateDao {
 
 	private final SessionFactory defaultSessionFactory;
 
@@ -29,7 +29,7 @@ public class SpringBootTemplateDao extends BaseHibernateDao {
 	 * @param defaultSessionFactoryParm
 	 *            autowired
 	 */
-	public SpringBootTemplateDao(@Autowired @Qualifier("defaultSessionFactory") final SessionFactory defaultSessionFactoryParm) {
+	public DefaultDao(@Autowired @Qualifier("defaultSessionFactory") final SessionFactory defaultSessionFactoryParm) {
 		defaultSessionFactory = defaultSessionFactoryParm;
 	}
 

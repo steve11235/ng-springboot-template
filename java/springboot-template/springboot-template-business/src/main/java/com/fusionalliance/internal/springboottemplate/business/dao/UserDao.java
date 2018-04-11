@@ -28,20 +28,20 @@ import com.fusionalliance.internal.springboottemplate.business.entity.User;
 public class UserDao {
 	private static final Logger LOG = LoggerFactory.getLogger(UserDao.class);
 
-	private final SpringBootTemplateDao springBootTemplateDao;
+	private final DefaultDao defaultDao;
 
 	/**
 	 * Constructor
 	 * 
-	 * @param springBootTemplateDaoParm
+	 * @param defaultDaoParm
 	 *            autowired
 	 */
-	public UserDao(@Autowired final SpringBootTemplateDao springBootTemplateDaoParm) {
-		springBootTemplateDao = springBootTemplateDaoParm;
+	public UserDao(@Autowired final DefaultDao defaultDaoParm) {
+		defaultDao = defaultDaoParm;
 	}
 
 	/**
-	 * Return true if the login on the User passed is unique.
+	 * Return true if the login for the User passed is unique.
 	 * <p>
 	 * Return false if the User is null or the login is blank.
 	 * 
@@ -65,7 +65,7 @@ public class UserDao {
 		);
 
 		try {
-			final NativeQuery<?> nativeQuery = springBootTemplateDao.retrieveCurrentSession() //
+			final NativeQuery<?> nativeQuery = defaultDao.retrieveCurrentSession() //
 					.createNativeQuery(query) //
 					.setParameter("login", userParm.getLogin()) //
 					.setParameter("userKey", userParm.getUserKey()) //
@@ -102,7 +102,7 @@ public class UserDao {
 		);
 
 		try {
-			final NativeQuery<User> nativeQuery = springBootTemplateDao.retrieveCurrentSession() //
+			final NativeQuery<User> nativeQuery = defaultDao.retrieveCurrentSession() //
 					.createNativeQuery(query, User.class) //
 					.setParameter("includeDeactivated", includeDeactivatedParm) //
 					.setParameter("includeAdminOnly", includeAdminOnlyParm) //
@@ -134,7 +134,7 @@ public class UserDao {
 		);
 
 		try {
-			final NativeQuery<?> nativeQuery = springBootTemplateDao.retrieveCurrentSession() //
+			final NativeQuery<?> nativeQuery = defaultDao.retrieveCurrentSession() //
 					.createNativeQuery(query) //
 					.setReadOnly(true);
 
@@ -162,6 +162,6 @@ public class UserDao {
 				.login("admin") //
 		;
 
-		springBootTemplateDao.persist(adminUser);
+		defaultDao.persist(adminUser);
 	}
 }

@@ -29,103 +29,97 @@ public final class LoggerUtility {
 		ValidationUtility.checkObjectNotNull("Logger is null", loggerParm);
 		ValidationUtility.checkStringNotBlank("Message is blank", messageParm);
 
-		final StringBuilder logMessageBuilder = new StringBuilder(1000);
+		final StringBuilder messageBuilder = new StringBuilder(1000);
 
-		logMessageBuilder.append(messageParm);
-		logMessageBuilder.append(retrieveCallerInformation());
+		messageBuilder.append(messageParm);
 
-		processThrowable(throwableParm, logMessageBuilder);
+		processStackFrames(new Exception(), messageBuilder, true);
+		processCause(throwableParm, messageBuilder);
+
+		loggerParm.error(messageBuilder.toString());
+	}
+
+	public static String retrieveCallerInformation() {
+		final StringBuilder messageBuilder = new StringBuilder(1000);
+
+		processStackFrames(new Exception(), messageBuilder, true);
+
+		return messageBuilder.toString();
+	}
+
+	public static String retrievePartialStackTrace(final Throwable throwableParm) {
+		final StringBuilder messageBuilder = new StringBuilder(1000);
+
+		processCause(throwableParm, messageBuilder);
+
+		return messageBuilder.toString();
 	}
 
 	/**
-	 * Add the the throwable and its stack frames to the log message builder. Recursively process its cause, if any.
+	 * Add the the throwable and its stack frames to the log message builder. Recursively processes the Throwable's cause, if any.
 	 * 
 	 * @param throwableParm
-	 * @param logMessageBuilder
+	 *            optional, no action if null
+	 * @param messageBuilderParm
+	 *            required, <b>mutated by method</b>
 	 */
-	private static void processThrowable(final Throwable throwableParm, final StringBuilder logMessageBuilder) {
+	private static void processCause(final Throwable throwableParm, final StringBuilder messageBuilderParm) {
 		if (throwableParm == null) {
 			return;
 		}
 
-		logMessageBuilder.append("\nCaused by ");
-		logMessageBuilder.append(throwableParm.getClass().getSimpleName());
-		logMessageBuilder.append(": ");
-		logMessageBuilder.append(throwableParm.getMessage());
-		logMessageBuilder.append(retrievePartialStackTrace(throwableParm));
+		messageBuilderParm.append("\nCaused by ");
+		messageBuilderParm.append(throwableParm.getClass().getSimpleName());
+		messageBuilderParm.append(": ");
+		messageBuilderParm.append(throwableParm.getMessage());
+
+		processStackFrames(throwableParm, messageBuilderParm, false);
 
 		final Throwable cause = throwableParm.getCause();
 		if (cause == null || cause == throwableParm) {
 			return;
 		}
 
-		processThrowable(cause, logMessageBuilder);
-	}
-
-	/**
-	 * Retrieve the caller's stack frame information and up to four of it's callers.
-	 * 
-	 * @return
-	 */
-	public static String retrieveCallerInformation() {
-		// Pass a dummy exception, ignore this call level
-		return processStackFrames(new Exception(), true);
-	}
-
-	/**
-	 * Retrieve up to five frames from the exception.
-	 * 
-	 * @param throwableParm
-	 * @return
-	 */
-	public static String retrievePartialStackTrace(final Throwable throwableParm) {
-		// Validate input
-		if (throwableParm == null) {
-			return "";
-		}
-
-		return processStackFrames(throwableParm, false);
+		processCause(cause, messageBuilderParm);
 	}
 
 	/**
 	 * Build a five frame stack trace.
 	 * 
 	 * @param throwableParm
-	 *            required, passing null will result in an NPE
+	 *            optional, no action if null
+	 * @param messageBuilderParm
+	 *            required, <b>mutated by method</b>
 	 * @param skipFirstFrameParm
 	 *            typically false; true ignores the class instantiating the exception
 	 * @return
 	 */
-	private static String processStackFrames(final Throwable throwableParm, final boolean skipFirstFrameParm) {
-		final StringBuilder stringBuilder = new StringBuilder(500);
-		final StackTraceElement[] stackTraceElements;
-		final int startFrame, maxFrames;
-
-		// Validate input
+	private static void processStackFrames(final Throwable throwableParm, final StringBuilder messageBuilderParm, final boolean skipFirstFrameParm) {
 		if (throwableParm == null) {
-			return "";
+			return;
 		}
 
-		startFrame = skipFirstFrameParm ? 1 : 0;
-		stackTraceElements = throwableParm.getStackTrace();
+		final int startFrame = skipFirstFrameParm ? 1 : 0;
+		final StackTraceElement[] stackTraceElements = throwableParm.getStackTrace();
 
 		// Output up to the specified frames
-		maxFrames = stackTraceElements.length < STACK_FRAMES + startFrame ? stackTraceElements.length + startFrame : STACK_FRAMES + startFrame;
+		final int maxFrames = stackTraceElements.length < STACK_FRAMES + startFrame ? stackTraceElements.length + startFrame
+				: STACK_FRAMES + startFrame;
 		for (int i = startFrame; i < maxFrames; i++) {
 			if (i == startFrame) {
-				stringBuilder.append("\nAt\t");
+				messageBuilderParm.append("\nAt\t");
 			}
 			else {
-				stringBuilder.append("\nCaller\t");
+				messageBuilderParm.append("\nCaller\t");
 			}
-			stringBuilder.append(stackTraceElements[i].getClassName());
-			stringBuilder.append(", ");
-			stringBuilder.append(stackTraceElements[i].getMethodName());
-			stringBuilder.append("(), ");
-			stringBuilder.append(stackTraceElements[i].getLineNumber());
+			messageBuilderParm.append(stackTraceElements[i].getClassName());
+			messageBuilderParm.append(", ");
+			messageBuilderParm.append(stackTraceElements[i].getMethodName());
+			messageBuilderParm.append("(), ");
+			messageBuilderParm.append(stackTraceElements[i].getLineNumber());
 		}
 
-		return stringBuilder.toString();
+		return;
 	}
 
 	/**
