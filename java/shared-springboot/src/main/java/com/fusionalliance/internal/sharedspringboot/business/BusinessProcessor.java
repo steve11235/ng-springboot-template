@@ -12,6 +12,7 @@ import com.fusionalliance.internal.sharedspringboot.api.BaseInboundDto;
 import com.fusionalliance.internal.sharedspringboot.api.BaseOutboundDto;
 import com.fusionalliance.internal.sharedspringboot.api.MessagesOnlyOutboundDto;
 import com.fusionalliance.internal.sharedutility.application.ApplicationException;
+import com.fusionalliance.internal.sharedutility.core.LoggerUtility;
 import com.fusionalliance.internal.sharedutility.core.TreatAsRestricted;
 import com.fusionalliance.internal.sharedutility.core.ValidationUtility;
 import com.fusionalliance.internal.sharedutility.messagemanager.MessageManager;
@@ -62,8 +63,9 @@ public abstract class BusinessProcessor<T extends BaseInboundDto<?>> {
 	protected abstract BaseOutboundDto<?> process() throws ApplicationException;
 
 	/**
-	 * This method is a facade to invoke {@link #process(BaseInboundDto)}. It then checks the {@link MessageManager} for errors. If errors, it throws
-	 * an {@link ApplicationException}; if no errors, it returns the BaseOutboundDto.
+	 * This method is a facade to invoke {@link #process(BaseInboundDto)}. First, it checks that the inbound DTO is valid. After processing, it then
+	 * checks the {@link MessageManager} for errors. If errors, it throws an {@link ApplicationException}; if no errors, it returns the
+	 * BaseOutboundDto.
 	 * <p>
 	 * This method should be invoked by the transaction layer only.
 	 * 
@@ -73,6 +75,15 @@ public abstract class BusinessProcessor<T extends BaseInboundDto<?>> {
 	 */
 	@TreatAsRestricted("Called by TransactionLayer.process() only")
 	public final BaseOutboundDto<?> processInternal() throws ApplicationException {
+		if (inboundDto.isValidationErrors()) {
+			LoggerUtility.logException(LOG, "The inbound DTO is invalid.", null);
+			for (String validationError : inboundDto.getValidationErrors()) {
+				MessageManager.addError(validationError);
+			}
+
+			throw new ApplicationException("Inbound DTO invalid");
+		}
+
 		final BaseOutboundDto<?> outboundDto;
 		try {
 			outboundDto = process();
@@ -82,7 +93,7 @@ public abstract class BusinessProcessor<T extends BaseInboundDto<?>> {
 			throw ae;
 		}
 		catch (final Exception e) {
-			LOG.error("An unexpected exception occurred during processing: ", e);
+			LoggerUtility.logException(LOG, "An unexpected exception occurred during business processing: ", e);
 
 			MessageManager.addSystem();
 
@@ -95,6 +106,7 @@ public abstract class BusinessProcessor<T extends BaseInboundDto<?>> {
 
 		// Outbound DTO should be valid, treat as System failure if not
 		if (outboundDto.isValidationErrors()) {
+			LoggerUtility.logException(LOG, "The outbound DTO is invalid.", null);
 			for (String validationError : outboundDto.getValidationErrors()) {
 				LOG.error(validationError);
 			}

@@ -5,6 +5,7 @@
  */
 package com.fusionalliance.internal.springboottemplate.business.dao;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -59,7 +60,7 @@ public class UserDao {
 
 		final String query = String.join(" ", //
 				"select count(*) rowCount", //
-				"from sb_template.user", //
+				"from sb_template.user_def", //
 				"where login = :login", //
 				"  and user_key <> :userKey" //
 		);
@@ -71,9 +72,9 @@ public class UserDao {
 					.setParameter("userKey", userParm.getUserKey()) //
 					.setReadOnly(true);
 
-			final Integer rows = (Integer) nativeQuery.uniqueResult();
+			final BigInteger rows = (BigInteger) nativeQuery.uniqueResult();
 
-			return rows == 0;
+			return rows.equals(BigInteger.ZERO);
 		}
 		catch (final Exception e) {
 			LoggerUtility.logException(LOG, "A Hibernate error occurred.", e);
@@ -94,11 +95,11 @@ public class UserDao {
 	 */
 	public List<User> retrieveUserList(final boolean includeDeactivatedParm, final boolean includeAdminOnlyParm) {
 		final String query = String.join(" ", //
-				"select u.*", //
-				"from user u", //
-				"where (:includeDeactivated or not u.deactivated)", //
-				"  and (not :includeAdminOnly or u.admin)", //
-				"order by u.login" //
+				"select *", //
+				"from sb_template.user_def", //
+				"where (:includeDeactivated or not deactivated)", //
+				"  and (not :includeAdminOnly or admin)", //
+				"order by login" //
 		);
 
 		try {
@@ -129,7 +130,7 @@ public class UserDao {
 	public void generateAdminAccount() {
 		final String query = String.join(" ", //
 				"select count(*) rowCount", //
-				"from sb_template.user", //
+				"from sb_template.user_def", //
 				"where login = 'admin'" //
 		);
 

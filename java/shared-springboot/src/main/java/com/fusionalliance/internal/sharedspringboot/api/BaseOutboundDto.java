@@ -24,12 +24,12 @@ public abstract class BaseOutboundDto<T extends BaseOutboundDto<?>> extends Base
 	private Messages messages;
 
 	/**
-	 * Put a Messages instance into the DTO. This method should only be used by service layer classes.
+	 * Put a Messages instance into the DTO. This method should only be used by framework classes.
 	 * 
 	 * @param messagesParm
 	 *            required
 	 */
-	@TreatAsRestricted("Used by service layer only")
+	@TreatAsRestricted("Used by framework only")
 	public final void putMessages(final Messages messagesParm) {
 		ValidationUtility.checkObjectNotNull("Messages is null", messagesParm);
 

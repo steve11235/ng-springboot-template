@@ -30,6 +30,7 @@ public final class GsonHelper {
 	static {
 		final GsonBuilder gsonBuilder = new GsonBuilder() //
 				.serializeNulls() //
+				.disableHtmlEscaping() //
 				.setPrettyPrinting();
 		GSON = gsonBuilder.create();
 	}

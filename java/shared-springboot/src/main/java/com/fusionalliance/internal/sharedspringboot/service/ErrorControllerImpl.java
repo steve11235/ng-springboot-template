@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.fusionalliance.internal.sharedspringboot.api.BaseOutboundDto;
 import com.fusionalliance.internal.sharedutility.messagemanager.MessageManager;
 import com.fusionalliance.internal.sharedutility.messagemanager.StandardCompletionStatus;
 
@@ -27,7 +28,7 @@ public class ErrorControllerImpl extends BaseController implements ErrorControll
 	@RequestMapping( //
 			path = ERROR_PATH, // 
 			produces = "application/json")
-	String handleError(final HttpServletRequest servletRequestParm) {
+	BaseOutboundDto<?> handleError(final HttpServletRequest servletRequestParm) {
 		// Perform request intialization
 		MessageManager.initialize();
 
@@ -38,7 +39,7 @@ public class ErrorControllerImpl extends BaseController implements ErrorControll
 		MessageManager.addInfo("Request path: %1s", requestAttributes.getAttribute("javax.servlet.error.request_uri", 0));
 		MessageManager.addInfo("Method: %1s", servletRequestParm.getMethod());
 
-		return generateJsonFromMessageManager(StandardCompletionStatus.INVALID_REQUEST);
+		return generateOutboundDtoFromMessageManager(StandardCompletionStatus.INVALID_REQUEST);
 	}
 
 	@Override

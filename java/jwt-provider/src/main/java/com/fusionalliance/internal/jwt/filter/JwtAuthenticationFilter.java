@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fusionalliance.internal.jwt.business.JwtImpl;
 import com.fusionalliance.internal.jwt.shared.SecretContainer;
+import com.fusionalliance.internal.sharedspringboot.service.LoginInfo;
 import com.fusionalliance.internal.sharedutility.jwt.JwtException;
 import com.fusionalliance.internal.sharedutility.jwt.JwtUtility;
 
@@ -49,9 +50,8 @@ public class JwtAuthenticationFilter implements Filter {
 		final HttpServletResponse response = (HttpServletResponse) responseParm;
 
 		if (!DO_AUTHENTICATION) {
-			request.setAttribute("login", "no auth");
-			request.setAttribute("userName", "Default User");
-			request.setAttribute("admin", Boolean.TRUE);
+			final LoginInfo loginInfo = new LoginInfo("{no auth}", "Default User", true);
+			request.setAttribute("loginInfo", loginInfo);
 
 			filterChainParm.doFilter(request, response);
 
@@ -94,9 +94,8 @@ public class JwtAuthenticationFilter implements Filter {
 			return;
 		}
 
-		request.setAttribute("login", jwtImpl.getLogin());
-		request.setAttribute("userName", jwtImpl.getName());
-		request.setAttribute("admin", jwtImpl.isAdmin());
+		final LoginInfo loginInfo = new LoginInfo(jwtImpl.getLogin(), jwtImpl.getName(), jwtImpl.isAdmin());
+		request.setAttribute("loginInfo", loginInfo);
 
 		filterChainParm.doFilter(request, response);
 	}

@@ -8,7 +8,9 @@ package com.fusionalliance.internal.sharedspringboot.api;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fusionalliance.internal.sharedutility.core.GenericCastUtility;
+import com.fusionalliance.internal.sharedutility.core.GsonHelper;
 import com.fusionalliance.internal.sharedutility.core.TreatAsProtected;
 import com.fusionalliance.internal.sharedutility.core.ValidationUtility;
 
@@ -29,8 +31,10 @@ import com.fusionalliance.internal.sharedutility.core.ValidationUtility;
  */
 public abstract class BaseDto<T extends BaseDto<?>> {
 	/** List of error messages generated during validation; no messages means validation was successful */
+	@JsonIgnore
 	private transient final List<String> validationErrors = new ArrayList<String>();
 	/** Flag indicating that the build() method has been called */
+	@JsonIgnore
 	private transient boolean built;
 
 	/**
@@ -110,5 +114,11 @@ public abstract class BaseDto<T extends BaseDto<?>> {
 		ValidationUtility.checkStringNotBlank("The validation error message is blank.", validationErrorParm);
 
 		validationErrors.add(validationErrorParm);
+	}
+
+	public String toJson() {
+		final String json = GsonHelper.GSON.toJson(this);
+
+		return json;
 	}
 }

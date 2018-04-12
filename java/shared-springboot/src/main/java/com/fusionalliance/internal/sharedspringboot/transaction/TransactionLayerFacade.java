@@ -5,12 +5,18 @@
  */
 package com.fusionalliance.internal.sharedspringboot.transaction;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
 import com.fusionalliance.internal.sharedspringboot.api.BaseOutboundDto;
 import com.fusionalliance.internal.sharedspringboot.api.MessagesOnlyOutboundDto;
 import com.fusionalliance.internal.sharedspringboot.business.BusinessProcessor;
 import com.fusionalliance.internal.sharedutility.application.ApplicationException;
+import com.fusionalliance.internal.sharedutility.core.LoggerUtility;
 import com.fusionalliance.internal.sharedutility.core.ValidationUtility;
 import com.fusionalliance.internal.sharedutility.messagemanager.MessageManager;
+import com.fusionalliance.internal.sharedutility.messagemanager.Messages;
 import com.fusionalliance.internal.sharedutility.messagemanager.StandardCompletionStatus;
 
 /**
@@ -18,7 +24,9 @@ import com.fusionalliance.internal.sharedutility.messagemanager.StandardCompleti
  * class calls an @Transactional method in the same class. The facade methods traps ApplicationException, ensuring that an outbound DTO is always
  * returned.
  */
-public final class TransactionLayerFacade {
+@Component
+public class TransactionLayerFacade {
+	private static final Logger LOG = LoggerFactory.getLogger(TransactionLayerFacade.class);
 
 	private final TransactionLayer transactionLayer;
 
@@ -38,39 +46,38 @@ public final class TransactionLayerFacade {
 	 * Execute the BusinessProcessor in a updatable transaction.
 	 * 
 	 * @param processorParm
+	 *            required
+	 * @param updatableParm
+	 *            run in updatable transaction?
 	 * @return never null
 	 */
-	public BaseOutboundDto<?> processUpdateable(final BusinessProcessor<?> processorParm) {
+	public BaseOutboundDto<?> process(final BusinessProcessor<?> processorParm, final boolean updatableParm) {
+		ValidationUtility.checkObjectNotNull("The processor is null", processorParm);
+
+		BaseOutboundDto<?> outboundDto = null;
+
 		try {
-			return transactionLayer.processUpdateable(processorParm);
+			if (updatableParm) {
+				outboundDto = transactionLayer.processUpdateable(processorParm);
+			}
+			else {
+				outboundDto = transactionLayer.processReadOnly(processorParm);
+			}
 		}
 		catch (final ApplicationException ae) {
-			return new MessagesOnlyOutboundDto();
-		}
-		finally {
-			updateCompletionStatus();
-		}
-	}
+			outboundDto = new MessagesOnlyOutboundDto().build();
 
-	/**
-	 * Execute the BusinessProcessor in a read-only transaction.
-	 * 
-	 * @param processorParm
-	 * @return never null
-	 */
-	public BaseOutboundDto<?> processReadOnly(final BusinessProcessor<?> processorParm) {
-		try {
-			return transactionLayer.processReadOnly(processorParm);
-		}
-		catch (final ApplicationException ae) {
-			return new MessagesOnlyOutboundDto();
-		}
-		finally {
-			updateCompletionStatus();
-		}
-	}
+			if (!MessageManager.isError()) {
+				MessageManager.addSystem();
 
-	private void updateCompletionStatus() {
+				LoggerUtility.logException(LOG, "Caught ApplicationException, no MessageManager error added.", ae);
+			}
+		}
+
 		MessageManager.setCompletionText(StandardCompletionStatus.determineFromMessageManagerSeverity().name());
+		final Messages messages = MessageManager.makeFinal();
+		outboundDto.putMessages(messages);
+
+		return outboundDto;
 	}
 }

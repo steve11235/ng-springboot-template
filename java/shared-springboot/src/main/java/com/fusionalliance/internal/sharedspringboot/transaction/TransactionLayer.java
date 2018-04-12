@@ -5,12 +5,13 @@
  */
 package com.fusionalliance.internal.sharedspringboot.transaction;
 
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fusionalliance.internal.sharedspringboot.api.BaseOutboundDto;
 import com.fusionalliance.internal.sharedspringboot.business.BusinessProcessor;
 import com.fusionalliance.internal.sharedutility.application.ApplicationException;
-import com.fusionalliance.internal.sharedutility.core.TreatAsProtected;
+import com.fusionalliance.internal.sharedutility.core.TreatAsRestricted;
 
 /**
  * This class implements a service supporting transactions. Note that it uses the DefaultTransactionManager. Classes that want to use a different
@@ -19,9 +20,10 @@ import com.fusionalliance.internal.sharedutility.core.TreatAsProtected;
  * <p>
  * This class should not be called directly; use {@link TransactionLayerFacade} instead.
  */
-@TreatAsProtected("Use TransactionLayerFacade instead")
+@Component
+@TreatAsRestricted("Use TransactionLayerFacade instead")
 public class TransactionLayer {
-	private static final String TRANSACTION_MANAGER_NAME = "DefaultTransactionManager";
+	private static final String TRANSACTION_MANAGER_NAME = "defaultTransactionManager";
 
 	/**
 	 * Execute the BusinessProcessor in a updatable transaction.

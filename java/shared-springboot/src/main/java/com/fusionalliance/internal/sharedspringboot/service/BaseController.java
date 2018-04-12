@@ -7,7 +7,6 @@ package com.fusionalliance.internal.sharedspringboot.service;
 
 import com.fusionalliance.internal.sharedspringboot.api.BaseDto;
 import com.fusionalliance.internal.sharedspringboot.api.MessagesOnlyOutboundDto;
-import com.fusionalliance.internal.sharedutility.core.GsonHelper;
 import com.fusionalliance.internal.sharedutility.core.ValidationUtility;
 import com.fusionalliance.internal.sharedutility.messagemanager.MessageManager;
 import com.fusionalliance.internal.sharedutility.messagemanager.StandardCompletionStatus;
@@ -18,13 +17,13 @@ import com.fusionalliance.internal.sharedutility.messagemanager.StandardCompleti
 public abstract class BaseController {
 
 	/**
-	 * Generate JSON using the MessagesOnlyOutboundDto. Callers must supply at least one message or a ValidationException is thrown.
+	 * Return a MessagesOnlyOutboundDto. Callers must supply at least one message or a ValidationException is thrown.
 	 * 
 	 * @param standardCompletionStatusParm
 	 *            required
 	 * @return
 	 */
-	public String generateJsonFromMessageManager(final StandardCompletionStatus standardCompletionStatusParm) {
+	protected MessagesOnlyOutboundDto generateOutboundDtoFromMessageManager(final StandardCompletionStatus standardCompletionStatusParm) {
 		ValidationUtility.checkObjectNotNull("No StandardCompletionStatus passed.", standardCompletionStatusParm);
 		ValidationUtility.checkBadConditionNotMet("The MessageManager is empty.", MessageManager.getMessages().isEmpty());
 
@@ -33,9 +32,7 @@ public abstract class BaseController {
 		final MessagesOnlyOutboundDto messagesOnlyDto = new MessagesOnlyOutboundDto().build();
 		messagesOnlyDto.putMessages(MessageManager.makeFinal());
 
-		final String messagesOnlyJson = GsonHelper.GSON.toJson(messagesOnlyDto);
-
-		return messagesOnlyJson;
+		return messagesOnlyDto;
 	}
 
 	/**
@@ -45,7 +42,7 @@ public abstract class BaseController {
 	 *            required
 	 * @return
 	 */
-	public void addDtoValidationErrorsToMessageManager(final BaseDto<?> baseDtoParm) {
+	protected void addDtoValidationErrorsToMessageManager(final BaseDto<?> baseDtoParm) {
 		ValidationUtility.checkObjectNotNull("The DTO is null.", baseDtoParm);
 
 		final String serviceName = baseDtoParm.getClass().getSimpleName().replaceAll("(?i)OutboundDto", "");

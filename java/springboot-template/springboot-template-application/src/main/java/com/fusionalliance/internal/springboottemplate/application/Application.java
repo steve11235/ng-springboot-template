@@ -40,8 +40,12 @@ import com.fusionalliance.internal.sharedspringboot.SpringContextHelper;
 		JdbcTemplateAutoConfiguration.class, //
 		JpaRepositoriesAutoConfiguration.class //
 })
-@ComponentScan
-@ServletComponentScan(basePackages = "com.fusionalliance.internal.springboottemplate.service")
+@ComponentScan(basePackages = { "com.fusionalliance.internal.springboottemplate", //
+		"com.fusionalliance.internal.sharedspringboot.transaction", //
+		"com.fusionalliance.internal.jwt" })
+@ServletComponentScan(basePackages = { "com.fusionalliance.internal.springboottemplate.service", //
+		"com.fusionalliance.internal.jwt.service", //
+		"com.fusionalliance.internal.jwt.filter" })
 @EnableTransactionManagement()
 public class Application {
 	public static void main(final String... args) throws Exception {
@@ -86,7 +90,7 @@ public class Application {
 		// Spring artifice for preparing a SessionFactory; a factory prepares a factory
 		final LocalSessionFactoryBean sessionFactoryFactory = new LocalSessionFactoryBean();
 		sessionFactoryFactory.setDataSource(defaultDataSourceParm);
-		sessionFactoryFactory.setPackagesToScan("com.fusionalliance.internal.business.entity");
+		sessionFactoryFactory.setPackagesToScan("com.fusionalliance.internal.springboottemplate.business.entity");
 
 		final Properties hibernateProperties = new Properties();
 		hibernateProperties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");

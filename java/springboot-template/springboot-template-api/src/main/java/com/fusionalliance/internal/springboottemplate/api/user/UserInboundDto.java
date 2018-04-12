@@ -25,7 +25,7 @@ import com.fusionalliance.internal.sharedspringboot.api.RequestTypeHolder;
  * </tr>
  * <tr>
  * <td>userKey</td>
- * <td>required</td>
+ * <td>ignored, treated as 0</td>
  * <td>required</td>
  * <td>required</td>
  * <td>ignored</td>
@@ -110,9 +110,9 @@ public final class UserInboundDto extends BaseInboundDto<UserInboundDto> {
 
 		switch (requestType) {
 		case RequestTypeHolder.ADD:
+			userKey = 0;
 			deactivated = false;
 
-			validateUserKey();
 			validateLogin();
 			validateCreds();
 			validateFullfullName();

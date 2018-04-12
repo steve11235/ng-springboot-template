@@ -24,9 +24,11 @@ import com.fusionalliance.internal.springboottemplate.business.dao.UserDao;
  * This class implements the User entity.
  * <p>
  * <b>Note:</b> The use of fluent setters is for convenience; there is no <code>build()</code> method, and instances are mutable.
+ * <p>
+ * "user" is a system table, so qualify the table name
  */
 @Entity
-@Table(schema = "sb_template")
+@Table(schema = "sb_template", name = "user_def")
 public class User implements PersistenceEntity {
 
 	@Id
