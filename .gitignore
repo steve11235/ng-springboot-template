@@ -1,8 +1,9 @@
 # Angular
-**/ng-modules/
+**/node-modules/
+**/.editorconfig
 
 # Java
-**/.settings
+**/.settings/
 **/.classpath
 **/.project
 **/target/
