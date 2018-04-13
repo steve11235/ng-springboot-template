@@ -30,7 +30,7 @@ public abstract class BaseOutboundDto<T extends BaseOutboundDto<?>> extends Base
 	 *            required
 	 */
 	@TreatAsRestricted("Used by framework only")
-	public final void putMessages(final Messages messagesParm) {
+	public void putMessages(final Messages messagesParm) {
 		ValidationUtility.checkObjectNotNull("Messages is null", messagesParm);
 
 		messages = messagesParm;

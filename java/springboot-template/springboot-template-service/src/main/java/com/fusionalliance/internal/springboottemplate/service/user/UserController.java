@@ -5,9 +5,13 @@
  */
 package com.fusionalliance.internal.springboottemplate.service.user;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,7 +31,10 @@ import com.fusionalliance.internal.springboottemplate.api.user.UserInboundDto;
 import com.fusionalliance.internal.springboottemplate.api.user.UserRequestTypeHolder;
 import com.fusionalliance.internal.springboottemplate.business.entity.User;
 import com.fusionalliance.internal.springboottemplate.business.processor.user.UserAddProcessor;
+import com.fusionalliance.internal.springboottemplate.business.processor.user.UserGetProcessor;
 import com.fusionalliance.internal.springboottemplate.business.processor.user.UserListProcessor;
+import com.fusionalliance.internal.springboottemplate.business.processor.user.UserUpdateCredsProcessor;
+import com.fusionalliance.internal.springboottemplate.business.processor.user.UserUpdateProcessor;
 
 /**
  * This class implements a RESTful controller for {@link User}-related endpoints.
@@ -62,8 +69,8 @@ public class UserController extends BaseController {
 	)
 	String handleUserListRequest( //
 			@RequestAttribute("loginInfo") final LoginInfo loginInfoParm, //
-			@RequestParam("includeDeactivated") final boolean includeDeativatedParm, //
-			@RequestParam("includeAdminOnly") final boolean includeAdminOnlyParm //
+			@RequestParam("includeDeactivated") final Optional<Boolean> includeDeativatedParm, //
+			@RequestParam("includeAdminOnly") final Optional<Boolean> includeAdminOnlyParm //
 	) {
 		MessageManager.initialize();
 
@@ -80,11 +87,51 @@ public class UserController extends BaseController {
 		final UserInboundDto inboundDto = new UserInboundDto() //
 				.requestTypeHolder(new UserRequestTypeHolder(UserRequestTypeHolder.LIST)) //
 				.loginInfo(loginInfoParm) //
-				.admin(includeAdminOnlyParm) //
-				.deactivated(includeDeativatedParm) //
+				.admin(includeAdminOnlyParm.orElse(Boolean.FALSE)) //
+				.deactivated(includeDeativatedParm.orElse(Boolean.FALSE)) //
 				.build();
 
 		final UserListProcessor processor = new UserListProcessor(inboundDto);
+		final BaseOutboundDto<?> outboundDto = transactionLayerFacade.process(processor, false);
+		final String json = outboundDto.toJson();
+
+		return json;
+	}
+
+	/**
+	 * Return a User. Requires admin.
+	 * 
+	 * @param loginInfoParm
+	 * @param userKeyParm
+	 * @return
+	 */
+	@GetMapping( //
+			path = { "/userKey/{userKey}" }, //
+			produces = "application/json" //
+	)
+	String handleUserGetRequest( //
+			@RequestAttribute("loginInfo") final LoginInfo loginInfoParm, //
+			@PathVariable("userKey") final long userKeyParm //
+	) {
+		MessageManager.initialize();
+
+		if (!loginInfoParm.isAdmin()) {
+			MessageManager.addError("Login '%1$s' ('%2$s') does not have permission to list users.", loginInfoParm.getLogin(),
+					loginInfoParm.getUserName());
+
+			final MessagesOnlyOutboundDto noAuthOutboundDto = generateOutboundDtoFromMessageManager(StandardCompletionStatus.INVALID_REQUEST);
+			final String json = noAuthOutboundDto.toJson();
+
+			return json;
+		}
+
+		final UserInboundDto inboundDto = new UserInboundDto() //
+				.requestTypeHolder(new UserRequestTypeHolder(UserRequestTypeHolder.GET)) //
+				.loginInfo(loginInfoParm) //
+				.userKey(userKeyParm) //
+				.build();
+
+		final UserGetProcessor processor = new UserGetProcessor(inboundDto);
 		final BaseOutboundDto<?> outboundDto = transactionLayerFacade.process(processor, false);
 		final String json = outboundDto.toJson();
 
@@ -127,6 +174,91 @@ public class UserController extends BaseController {
 				.build();
 
 		final UserAddProcessor processor = new UserAddProcessor(inboundDto);
+		final BaseOutboundDto<?> outboundDto = transactionLayerFacade.process(processor, true);
+		final String json = outboundDto.toJson();
+
+		return json;
+	}
+
+	/**
+	 * Update a User.
+	 * <p>
+	 * The path userKey overrides any userKey supplied in the JSON.
+	 * 
+	 * @param loginInfoParm
+	 * @param includeDeativatedParm
+	 * @param adminOnlyParm
+	 * @return
+	 */
+	@PatchMapping( //
+			path = { "/userKey/{userKey}" }, //
+			produces = "application/json" //
+	)
+	String handleUserUpdateRequest( //
+			@RequestAttribute("loginInfo") final LoginInfo loginInfoParm, //
+			@PathVariable("userKey") final long userKeyParm, //
+			@RequestBody() final String requestJsonParm //
+	) {
+		MessageManager.initialize();
+
+		if (!loginInfoParm.isAdmin()) {
+			MessageManager.addError("Login '%1$s' ('%2$s') does not have permission to add users.", loginInfoParm.getLogin(),
+					loginInfoParm.getUserName());
+
+			final MessagesOnlyOutboundDto noAuthOutboundDto = generateOutboundDtoFromMessageManager(StandardCompletionStatus.INVALID_REQUEST);
+			final String json = noAuthOutboundDto.toJson();
+
+			return json;
+		}
+
+		final UserInboundDto inboundDto = GsonHelper.GSON.fromJson(requestJsonParm, UserInboundDto.class) //
+				.requestTypeHolder(new UserRequestTypeHolder(UserRequestTypeHolder.UPDATE)) //
+				.loginInfo(loginInfoParm) //
+				.userKey(userKeyParm) //
+				.build();
+
+		final UserUpdateProcessor processor = new UserUpdateProcessor(inboundDto);
+		final BaseOutboundDto<?> outboundDto = transactionLayerFacade.process(processor, true);
+		final String json = outboundDto.toJson();
+
+		return json;
+	}
+
+	/**
+	 * Update a User's creds.
+	 * 
+	 * @param loginInfoParm
+	 * @param includeDeativatedParm
+	 * @param adminOnlyParm
+	 * @return
+	 */
+	@PatchMapping( //
+			path = { "/userKey/{userKey}/creds" }, //
+			produces = "application/json" //
+	)
+	String handleUserCredsUpdateRequest( //
+			@RequestAttribute("loginInfo") final LoginInfo loginInfoParm, //
+			@PathVariable("userKey") final long userKeyParm, //
+			@RequestBody() final String requestJsonParm //
+	) {
+		MessageManager.initialize();
+
+		if (!loginInfoParm.isAdmin()) {
+			MessageManager.addError("Login '%1$s' ('%2$s') does not have permission to add users.", loginInfoParm.getLogin(),
+					loginInfoParm.getUserName());
+
+			final MessagesOnlyOutboundDto noAuthOutboundDto = generateOutboundDtoFromMessageManager(StandardCompletionStatus.INVALID_REQUEST);
+			final String json = noAuthOutboundDto.toJson();
+
+			return json;
+		}
+
+		final UserInboundDto inboundDto = GsonHelper.GSON.fromJson(requestJsonParm, UserInboundDto.class) //
+				.requestTypeHolder(new UserRequestTypeHolder(UserRequestTypeHolder.UPDATE_CREDS)) //
+				.userKey(userKeyParm) //
+				.build();
+
+		final UserUpdateCredsProcessor processor = new UserUpdateCredsProcessor(inboundDto);
 		final BaseOutboundDto<?> outboundDto = transactionLayerFacade.process(processor, true);
 		final String json = outboundDto.toJson();
 

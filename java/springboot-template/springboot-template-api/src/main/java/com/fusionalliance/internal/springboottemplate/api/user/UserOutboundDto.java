@@ -19,8 +19,7 @@ public class UserOutboundDto extends BaseOutboundDto<UserOutboundDto> {
 	private boolean deactivated;
 	/** The unique value supplied on the login screen */
 	private String login;
-	/** Hashed password */
-	private String creds;
+	// private String creds; intentionally omitted
 	/** Full fullName */
 	private String fullName;
 	private String description;
@@ -32,7 +31,6 @@ public class UserOutboundDto extends BaseOutboundDto<UserOutboundDto> {
 
 		validateUserKey();
 		validateLogin();
-		validateCreds();
 		validateFullfullName();
 		validateDescription();
 	}
@@ -46,12 +44,6 @@ public class UserOutboundDto extends BaseOutboundDto<UserOutboundDto> {
 	void validateLogin() {
 		if (StringUtils.isBlank(login)) {
 			addValidationError("Login is blank");
-		}
-	}
-
-	void validateCreds() {
-		if (StringUtils.isBlank(creds)) {
-			addValidationError("Creds is blank");
 		}
 	}
 
@@ -77,10 +69,6 @@ public class UserOutboundDto extends BaseOutboundDto<UserOutboundDto> {
 
 	public String getLogin() {
 		return login;
-	}
-
-	public String getCreds() {
-		return creds;
 	}
 
 	public String getFullfullName() {
@@ -115,14 +103,6 @@ public class UserOutboundDto extends BaseOutboundDto<UserOutboundDto> {
 		checkNotBuilt();
 
 		login = loginParm;
-
-		return this;
-	}
-
-	public UserOutboundDto creds(String credsParm) {
-		checkNotBuilt();
-
-		creds = credsParm;
 
 		return this;
 	}

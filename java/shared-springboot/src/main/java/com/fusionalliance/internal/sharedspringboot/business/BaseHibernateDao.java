@@ -39,37 +39,37 @@ public abstract class BaseHibernateDao {
 	}
 
 	/**
-	 * Get an entity by id.
+	 * Get an entity by key.
 	 * <p>
 	 * This method delegates to {@link Session#get(Class, java.io.Serializable)}.
 	 * 
 	 * @param entityClassParm
-	 * @param idParm
+	 * @param keyParm
 	 * @return null if not found
 	 */
-	public <T extends PersistenceEntity> T get(final Class<T> entityClassParm, final long idParm) {
-		final T entity = retrieveCurrentSession().get(entityClassParm, idParm);
+	public <T extends PersistenceEntity> T get(final Class<T> entityClassParm, final long keyParm) {
+		final T entity = retrieveCurrentSession().get(entityClassParm, keyParm);
 
 		return entity;
 	}
 
 	/**
-	 * Get a lazy proxy to an entity by id. This approach can save a database access if the non-id fields of the proxy are not used.
+	 * Get a lazy proxy to an entity by key. This approach can save a database access if the non-key fields of the proxy are not used.
 	 * <p>
 	 * This method delegates to {@link Session#load(Class, java.io.Serializable)}.
 	 * <p>
-	 * <b>Warning:</b> Lazy proxies throw ObjectNotFoundException if the database row does not exist, but only when of the non-id fields is accessed.
-	 * Use this method only after the existence of a row having the id has been established.
+	 * <b>Warning:</b> Lazy proxies throw ObjectNotFoundException if the database row does not exist, but only when one of the non-key fields is
+	 * accessed. Use this method only after the existence of a row having the key has been established.
 	 * 
 	 * @param <T>
 	 *            the entity type
 	 * @param entityClassParm
 	 *            required
-	 * @param idParm
+	 * @param keyParm
 	 * @return null if not found
 	 */
-	public <T extends PersistenceEntity> T getLazyProxy(final Class<T> entityClassParm, final long idParm) {
-		final T entity = retrieveCurrentSession().load(entityClassParm, idParm);
+	public <T extends PersistenceEntity> T getLazyProxy(final Class<T> entityClassParm, final long keyParm) {
+		final T entity = retrieveCurrentSession().load(entityClassParm, keyParm);
 
 		return entity;
 	}

@@ -51,15 +51,6 @@ import com.fusionalliance.internal.sharedspringboot.api.RequestTypeHolder;
  * <td>ignored</td>
  * </tr>
  * <tr>
- * <td>creds</td>
- * <td>required</td>
- * <td>ignored</td>
- * <td>ignored</td>
- * <td>ignored</td>
- * <td>required</td>
- * <td>required</td>
- * </tr>
- * <tr>
  * <td>fullName</td>
  * <td>required</td>
  * <td>ignored</td>
@@ -86,6 +77,24 @@ import com.fusionalliance.internal.sharedspringboot.api.RequestTypeHolder;
  * <td>optional, false</td>
  * <td>ignored</td>
  * </tr>
+ * <tr>
+ * <td>existingCreds</td>
+ * <td>ignored</td>
+ * <td>ignored</td>
+ * <td>ignored</td>
+ * <td>ignored</td>
+ * <td>ignored</td>
+ * <td>required</td>
+ * </tr>
+ * <tr>
+ * <td>updateToCreds</td>
+ * <td>required</td>
+ * <td>ignored</td>
+ * <td>ignored</td>
+ * <td>ignored</td>
+ * <td>ignored</td>
+ * <td>required</td>
+ * </tr>
  * </table>
  */
 public final class UserInboundDto extends BaseInboundDto<UserInboundDto> {
@@ -95,12 +104,14 @@ public final class UserInboundDto extends BaseInboundDto<UserInboundDto> {
 	private boolean deactivated;
 	/** The unique value supplied on the login screen */
 	private String login;
-	/** Hashed password */
-	private String creds;
 	/** Full fullName */
 	private String fullName;
 	private String description;
 	private boolean admin;
+	/** Hashed password (current) */
+	private String existingCreds;
+	/** Hashed password (update to) */
+	private String updateToCreds;
 
 	@Override
 	public void validate() {
@@ -114,9 +125,10 @@ public final class UserInboundDto extends BaseInboundDto<UserInboundDto> {
 			deactivated = false;
 
 			validateLogin();
-			validateCreds();
+			validateExistingCreds();
 			validateFullfullName();
 			validateDescription();
+			validateUpdateToCreds();
 			break;
 		case RequestTypeHolder.DELETE:
 			deactivated = true;
@@ -131,16 +143,13 @@ public final class UserInboundDto extends BaseInboundDto<UserInboundDto> {
 		case RequestTypeHolder.UPDATE:
 			validateUserKey();
 			validateLogin();
-			validateCreds();
 			validateFullfullName();
 			validateDescription();
 			break;
 		case UserRequestTypeHolder.UPDATE_CREDS:
 			validateUserKey();
-			validateLogin();
-			validateCreds();
-			validateFullfullName();
-			validateDescription();
+			validateExistingCreds();
+			validateUpdateToCreds();
 			break;
 		default:
 			if (!requestType.isEmpty()) {
@@ -161,12 +170,6 @@ public final class UserInboundDto extends BaseInboundDto<UserInboundDto> {
 		}
 	}
 
-	void validateCreds() {
-		if (StringUtils.isBlank(creds)) {
-			addValidationError("Creds is blank");
-		}
-	}
-
 	void validateFullfullName() {
 		if (StringUtils.isBlank(fullName)) {
 			addValidationError("FullfullName is blank");
@@ -176,6 +179,18 @@ public final class UserInboundDto extends BaseInboundDto<UserInboundDto> {
 	void validateDescription() {
 		if (StringUtils.isBlank(description)) {
 			addValidationError("Description is blank");
+		}
+	}
+
+	void validateExistingCreds() {
+		if (StringUtils.isBlank(existingCreds)) {
+			addValidationError("Existing existingCreds is blank");
+		}
+	}
+
+	void validateUpdateToCreds() {
+		if (StringUtils.isBlank(updateToCreds)) {
+			addValidationError("Update-to existingCreds is blank");
 		}
 	}
 
@@ -191,10 +206,6 @@ public final class UserInboundDto extends BaseInboundDto<UserInboundDto> {
 		return login;
 	}
 
-	public String getCreds() {
-		return creds;
-	}
-
 	public String getFullfullName() {
 		return fullName;
 	}
@@ -205,6 +216,14 @@ public final class UserInboundDto extends BaseInboundDto<UserInboundDto> {
 
 	public boolean isAdmin() {
 		return admin;
+	}
+
+	public String getExistingCreds() {
+		return existingCreds;
+	}
+
+	public String getUpdateToCreds() {
+		return updateToCreds;
 	}
 
 	public UserInboundDto userKey(long userKeyParm) {
@@ -231,14 +250,6 @@ public final class UserInboundDto extends BaseInboundDto<UserInboundDto> {
 		return this;
 	}
 
-	public UserInboundDto creds(String credsParm) {
-		checkNotBuilt();
-
-		creds = credsParm;
-
-		return this;
-	}
-
 	public UserInboundDto fullName(String fullNameParm) {
 		checkNotBuilt();
 
@@ -259,6 +270,22 @@ public final class UserInboundDto extends BaseInboundDto<UserInboundDto> {
 		checkNotBuilt();
 
 		admin = adminParm;
+
+		return this;
+	}
+
+	public UserInboundDto existingCreds(String credsParm) {
+		checkNotBuilt();
+
+		existingCreds = credsParm;
+
+		return this;
+	}
+
+	public UserInboundDto updateToCreds(String credsParm) {
+		checkNotBuilt();
+
+		existingCreds = credsParm;
 
 		return this;
 	}

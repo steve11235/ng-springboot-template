@@ -16,9 +16,9 @@ import com.fusionalliance.internal.springboottemplate.business.dao.DefaultDao;
 import com.fusionalliance.internal.springboottemplate.business.entity.User;
 
 /**
- * This class implements a {@link BusinessProcessor} for {@link User} adds.
+ * This class implements a {@link BusinessProcessor} for {@link User} updates.
  */
-public class UserAddProcessor extends BusinessProcessor<UserInboundDto> {
+public class UserUpdateProcessor extends BusinessProcessor<UserInboundDto> {
 
 	/**
 	 * Constructor
@@ -26,7 +26,7 @@ public class UserAddProcessor extends BusinessProcessor<UserInboundDto> {
 	 * @param userInboundDtoParm
 	 *            required
 	 */
-	public UserAddProcessor(final UserInboundDto userInboundDtoParm) {
+	public UserUpdateProcessor(final UserInboundDto userInboundDtoParm) {
 		super(userInboundDtoParm);
 	}
 
@@ -34,23 +34,28 @@ public class UserAddProcessor extends BusinessProcessor<UserInboundDto> {
 	protected BaseOutboundDto<?> process() throws ApplicationException {
 		final UserInboundDto inboundDto = getInboundDto();
 
-		final User user = new User() //
+		final User user = SpringContextHelper.getBeanByClass(DefaultDao.class).get(User.class, inboundDto.getUserKey());
+		if (user == null) {
+			MessageManager.addError("The user was not found.");
+
+			throw new ApplicationException("User not found");
+		}
+
+		user //
 				.admin(inboundDto.isAdmin()) //
-				.creds(inboundDto.getUpdateToCreds()) //
+				// .creds(inboundDto.getCreds()) do not modify
 				.deactivated(inboundDto.isDeactivated()) //
 				.description(inboundDto.getDescription()) //
 				.fullName(inboundDto.getFullfullName()) //
 				.login(inboundDto.getLogin()) //
-				.userKey(inboundDto.getUserKey()) //
+		// .userKey(inboundDto.getUserKey()) do not modify 
 		;
 
 		if (!user.validate()) {
 			throw new ApplicationException("User validation failed");
 		}
 
-		SpringContextHelper.getBeanByClass(DefaultDao.class).persist(user);
-
-		MessageManager.addInfo("User login %1$s (%2$s) was added.", user.getLogin(), user.getFullName());
+		MessageManager.addInfo("User login %1$s (%2$s) was updated.", user.getLogin(), user.getFullName());
 
 		return new MessagesOnlyOutboundDto().build();
 	}

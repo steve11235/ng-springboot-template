@@ -39,7 +39,6 @@ public class UserListProcessor extends BusinessProcessor<UserInboundDto> {
 		for (User user : userList) {
 			userOutboundDto = new UserOutboundDto() //
 					.admin(user.isAdmin()) //
-					.creds(user.getCreds()) //
 					.deactivated(user.isDeactivated()) //
 					.description(user.getDescription()) //
 					.fullName(user.getFullName()) //

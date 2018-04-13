@@ -1,0 +1,4 @@
+com\fusionalliance\internal\springboottemplate\api\user\UserInboundDto.class
+com\fusionalliance\internal\springboottemplate\api\user\UserListOutboundDto.class
+com\fusionalliance\internal\springboottemplate\api\user\UserRequestTypeHolder.class
+com\fusionalliance\internal\springboottemplate\api\user\UserOutboundDto.class

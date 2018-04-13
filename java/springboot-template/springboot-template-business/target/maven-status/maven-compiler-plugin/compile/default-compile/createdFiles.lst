@@ -1,0 +1,8 @@
+com\fusionalliance\internal\springboottemplate\business\processor\user\UserAddProcessor.class
+com\fusionalliance\internal\springboottemplate\business\processor\user\UserUpdateCredsProcessor.class
+com\fusionalliance\internal\springboottemplate\business\processor\user\UserGetProcessor.class
+com\fusionalliance\internal\springboottemplate\business\processor\user\UserListProcessor.class
+com\fusionalliance\internal\springboottemplate\business\dao\DefaultDao.class
+com\fusionalliance\internal\springboottemplate\business\dao\UserDao.class
+com\fusionalliance\internal\springboottemplate\business\entity\User.class
+com\fusionalliance\internal\springboottemplate\business\processor\user\UserUpdateProcessor.class
