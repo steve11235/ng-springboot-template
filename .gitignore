@@ -1,6 +1,7 @@
 # Angular
 **/node-modules/
 **/.editorconfig
+**/dist/
 
 # Java
 **/.settings/

@@ -1,0 +1,27 @@
+div.container {
+  overflow: auto;
+  box-sizing: content-box;
+  padding: 0.2em 0.5em;
+  height: 4.4em; /* 4 x line-height - padding-bottom */
+  line-height: 1.15;
+}
+
+.INFO::before {
+  color: green;
+  content: "info: ";
+}
+
+.WARN::before {
+  color: orange;
+  content: "Warn: ";
+}
+
+.ERROR::before {
+  color: red;
+  content: "Error: ";
+}
+
+.SYSTEM::before {
+  color: magenta;
+  content: "SYSTEM: ";
+}

@@ -24,10 +24,19 @@ body {
   color: var(--base-font-color);
 }
 
+*:focus {
+  outline: none;
+  box-shadow: 0 0 2px 2px var(--base-color-fade);
+}
+
 div {
   position: relative;
   overflow: hidden;
   box-sizing: border-box;
+}
+
+p {
+  margin: .75em 0;
 }
 
 .flexContainer {
@@ -45,4 +54,160 @@ div {
 
 .autoScrollY {
   overflow-y: auto;
+}
+
+.posrel {
+  position: relative;
+}
+
+.floatleft {
+  float: left;
+}
+
+.clearLeft {
+  clear: left;
+}
+
+.center {
+  text-align: center;
+}
+
+.right {
+  text-align: right;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+select,
+input,
+textarea {
+  font-family: var(--font-family);
+  font-size: 1em;
+}
+
+textarea {
+  min-height: 4.4vw;
+  min-width: 40vw;
+  line-height: 1.1vw;
+}
+
+.list-title {
+  font-weight: bold;
+  font-size: 1.25em;
+}
+
+.cell,
+.cell-heading {
+  float: left;
+  border-style: solid;
+  border-width: thin;
+  border-color: hsla(0, 0%, 0%, 0);
+  padding: 0 0.5em;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.cell-heading {
+  border-left-color: var(--base-color-fade);
+  text-align: center;
+}
+
+.row-border {
+  border-bottom-style: solid;
+  border-bottom-width: thin;
+  border-bottom-color: var(--base-color-fade);
+}
+
+.cell-clickable {
+  text-align: center;
+  cursor: pointer;
+}
+
+.cell-not-clickable {
+  text-align: center;
+  color: var(--base-gray-fade);
+  cursor: default;
+  user-select: none;
+  pointer-events: none;
+}
+
+.w1 {
+  width: 1em;
+}
+
+.w2 {
+  width: 2em;
+}
+
+.w3 {
+  width: 3em;
+}
+
+.w5 {
+  width: 5em;
+}
+
+.w10 {
+  width: 10em;
+}
+
+.w20 {
+  width: 20em;
+}
+
+.w40 {
+  width: 40em;
+}
+
+span.block {
+  display: inline-block;
+}
+
+.floatContainer::after {
+  content: " ";
+  display: block;
+  height: 0;
+  clear: both;
+}
+
+span.button {
+  display: inline-block;
+  margin: 3px;
+  border-style: solid;
+  border-width: 1px 3px 3px 1px;
+  border-color: var(--base-color-fade);
+  border-radius: 10px;
+  padding: 1px 15px;
+  cursor: pointer;
+  color: white;
+  background-color: var(--base-color);
+}
+
+span.button,
+.noselect {
+  user-select: none;
+  /* Standard syntax */
+  -webkit-user-select: none;
+  /* Chrome, Opera, Safari */
+  -moz-user-select: none;
+  /* Firefox 2+ */
+  -ms-user-select: none;
+  /* IE 10+ */
+}
+
+span.button:hover {
+  border-color: var(--comp-color-fade);
+}
+
+span.button.disabled {
+  border-color: var(--base-gray);
+  cursor: default;
+  background-color: var(--base-gray-fade);
+  pointer-events: none;
+}
+
+#mainArea {
+  position: relative;
 }
