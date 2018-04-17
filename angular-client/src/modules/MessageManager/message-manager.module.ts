@@ -21,5 +21,4 @@ import { MessageManager } from './message-manager.service';
     MessageManagerComponent
   ]
 })
-
 export class MessageManagerModule { }

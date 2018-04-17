@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { MessageManager } from "./message-manager.service";
 import { Message } from "./message";
+import { MessageSeverity } from "./message-severity";
 
 @Component({
   selector: "message-manager",

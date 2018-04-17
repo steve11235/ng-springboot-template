@@ -4,13 +4,15 @@ import { NgZone } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { MessageManagerModule } from '../modules/MessageManager/message-manager.module';
+import { ClockModule } from '../modules/Clock/clock.module';
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
     BrowserModule,
-    MessageManagerModule
+    MessageManagerModule,
+    ClockModule
   ],
   providers: [
   ],
