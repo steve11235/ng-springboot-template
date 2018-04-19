@@ -1,0 +1,23 @@
+.coverScreen {
+    z-index: 1;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: hsla(0, 0%, 100%, 0.5);
+}
+
+.loginArea {
+    display: inline-block;
+    margin: 3em;
+    box-shadow: 0 0 2em 2em white;
+    border: .5em solid var(--base-color);
+    border-radius: 1em;
+    padding: 2em;
+    min-width: 30%;
+    background-color: white;
+}
+
+.errorMessage {
+    color: var(--comp-font-color);
+    font-size: 1.2em;
+}

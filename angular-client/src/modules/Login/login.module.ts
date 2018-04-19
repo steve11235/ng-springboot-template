@@ -1,24 +1,24 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 
-import { ClockService } from "./clock.service";
-import { ClockComponent } from "./clock.component";
+import { LoginComponent } from "./login.component";
+import { LoginService } from "./login.service";
 
 @NgModule({
     declarations: [
-        ClockComponent
+        LoginComponent
     ],
     imports: [
         CommonModule
     ],
     exports: [
-        ClockComponent
+        LoginComponent
     ],
     providers: [
-        ClockService
+        LoginService
     ],
     bootstrap: [
-        ClockComponent
+        LoginComponent
     ]
 })
-export class ClockModule {}
+export class LoginModule {};

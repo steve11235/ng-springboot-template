@@ -1,5 +1,6 @@
 :root {
   --font-family: Arial, Helvetica, "Liberation Sans", sans-serif;
+  --base-font-size: 1vw;
   --base-color: hsl(200, 100%, 37%);
   --base-color-fade: hsl(200, 50%, 75%);
   --comp-color: hsl(20, 100%, 37%);
@@ -19,7 +20,7 @@ body {
 }
 
 body {
-  font-size: 1vw;
+  font-size: var(--base-font-size);
   font-family: var(--font-family);
   color: var(--base-font-color);
 }
@@ -35,8 +36,14 @@ div {
   box-sizing: border-box;
 }
 
+h1, h2, h3, h4 {
+  margin: 0;
+  padding: .25em 0;
+}
+
 p {
-  margin: .75em 0;
+  margin: 0;
+  padding: .25em 0;
 }
 
 .flexContainer {
@@ -52,12 +59,12 @@ p {
   flex: auto;
 }
 
-.autoScrollY {
-  overflow-y: auto;
+.pad {
+  padding: .5em;
 }
 
-.posrel {
-  position: relative;
+.autoScrollY {
+  overflow-y: auto;
 }
 
 .floatleft {
@@ -66,6 +73,10 @@ p {
 
 .clearLeft {
   clear: left;
+}
+
+.left {
+  text-align: left;
 }
 
 .center {
@@ -149,8 +160,16 @@ textarea {
   width: 5em;
 }
 
+.w7 {
+  width: 7em;
+}
+
 .w10 {
   width: 10em;
+}
+
+.w15 {
+  width: 15em;
 }
 
 .w20 {
@@ -172,20 +191,41 @@ span.block {
   clear: both;
 }
 
-span.button {
+.button {
   display: inline-block;
-  margin: 3px;
-  border-style: solid;
-  border-width: 1px 3px 3px 1px;
-  border-color: var(--base-color-fade);
-  border-radius: 10px;
-  padding: 1px 15px;
+  margin: 0 5px;
+  border: 1px solid hsla(0, 0%, 0%, 0);
+  border-radius: 5em;
+  padding: 0 2em;
+  background: radial-gradient(white, var(--base-color-fade), var(--base-font-color) 95%);
+  min-width: 4em;
+  height: 1.75em;
+  line-height: 2em;
+  text-align: center;
+  font-size: var(--base-font-size);
+  font-weight: bold;
+  color: var(--base-font-color);
+  text-decoration: none;
   cursor: pointer;
-  color: white;
-  background-color: var(--base-color);
 }
 
-span.button,
+.button:hover {
+  background: radial-gradient(white, var(--base-color-fade), var(--base-color) 95%);
+}
+
+.button.disabled {
+  background: radial-gradient(white, var(--base-gray-fade), var(--base-gray) 90%);
+  cursor: default;
+  pointer-events: none;
+}
+
+.activeLink {
+  color: var(--base-color);
+  cursor: default;
+  pointer-events: none;
+}
+
+.button,
 .noselect {
   user-select: none;
   /* Standard syntax */
@@ -195,19 +235,4 @@ span.button,
   /* Firefox 2+ */
   -ms-user-select: none;
   /* IE 10+ */
-}
-
-span.button:hover {
-  border-color: var(--comp-color-fade);
-}
-
-span.button.disabled {
-  border-color: var(--base-gray);
-  cursor: default;
-  background-color: var(--base-gray-fade);
-  pointer-events: none;
-}
-
-#mainArea {
-  position: relative;
 }

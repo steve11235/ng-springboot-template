@@ -1,0 +1,24 @@
+<div class="flexContainer coverScreen">
+    <div class="fillHeight">&nbsp;</div>
+    <div class="fixedHeight center">
+        <div class="loginArea center">
+            <h1>Please Log In</h1>
+            <p>
+                <span class="block w7 right">Login:</span>
+                <input class="w7" />
+            </p>
+            <p>
+                <span class="block w7 right">Password:</span>
+                <input type="password" class="w7" />
+            </p>
+            <p>
+                <span class="button" tabindex="0">Log In</span>
+                <span class="button" tabindex="0" (click)="handleCancel()">Cancel</span>
+            </p>
+            <p>
+                <span class="errorMessage">{{errorMessage}}</span>
+            </p>
+        </div>
+    </div>
+    <div class="fillHeight">&nbsp;</div>
+</div>

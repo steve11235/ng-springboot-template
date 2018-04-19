@@ -1,0 +1,83 @@
+.leftContainer {
+  float: left;
+  width: 15%;
+  height: 100%;
+}
+
+.logoArea {
+  box-sizing: content-box;
+  padding: 5px;
+  height: 4em;
+  background-color: var(--base-color);
+}
+
+.logo {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.navArea {
+  background: linear-gradient(var(--base-color), var(--base-color-fade));
+}
+
+.button {
+  display: block;
+  margin: 5px;
+  background: radial-gradient(white, var(--comp-color-fade), var(--comp-font-color) 95%);
+  font-size: 1.25em;
+  color: var(--comp-font-color);
+}
+
+.button:hover {
+  background: radial-gradient(white, var(--comp-color-fade), var(--comp-color) 95%);
+}
+
+.button.disabled {
+  background: radial-gradient(white, var(--base-gray-fade), var(--base-gray) 95%);
+}
+
+.activeLink {
+  color: var(--comp-color);
+}
+
+hr {
+  margin: 5px;
+  border-style: solid none;
+  border-width: 1px;
+  border-color: white;
+  padding: 1px 0;
+}
+
+.rightContainer {
+  float: left;
+  width: 85%;
+  height: 100%;
+}
+
+.titleArea {
+  height: 4em;
+  background: linear-gradient(to right, var(--base-color), var(--base-color-fade));
+}
+
+.title {
+  position: absolute;
+  bottom: 10%;
+  left: 0.5em;
+  font-size: 2.5em;
+  color: var(--comp-font-color);
+  text-shadow: 0 0 10px white;
+}
+
+.clock {
+  position: absolute;
+  bottom: 15%;
+  right: 0.5em;
+  font-size: 1.5em;
+  color: var(--comp-font-color);
+}
+
+.messageManager {
+  border: none;
+  border-bottom: 0.25em double var(--base-color);
+  overflow-y: auto;
+}

@@ -7,6 +7,7 @@ import { ClockService } from "./clock.service";
 })
 export class ClockComponent implements OnInit {
   dateFormatted: String = "waiting to be set";
+  private readonly MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
   constructor(private clockService: ClockService) {}
 
@@ -17,12 +18,12 @@ export class ClockComponent implements OnInit {
 
   private updateClock(dateAsMillis: number) {
     const nextDate: Date = new Date(dateAsMillis);
-    const month = String(nextDate.getMonth() + 1);
-    const day = String(nextDate.getDate());
-    const year = String(nextDate.getFullYear());
-    const hour = String(nextDate.getHours());
-    const minute = ("0" + String(nextDate.getMinutes())).slice(-2);
-    const dateFormatted = month + "/" + day + "/" + year + " " + hour + ":" + minute;
+    const month = this.MONTHS[nextDate.getMonth()];
+    const day = "" + nextDate.getDate();
+    const year = "" + nextDate.getFullYear();
+    const hour = "" + nextDate.getHours();
+    const minute = ("0" + nextDate.getMinutes()).slice(-2);
+    const dateFormatted = month.concat(" ", day, ", ", year, " ", hour, ":", minute);
 
     this.dateFormatted = dateFormatted;
   }
