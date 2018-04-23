@@ -1,8 +1,8 @@
-import { Message } from "./message";
-import { MessageManager } from "./message-manager.service";
-import { MessageSeverity } from "./message-severity";
+import { Message } from './message';
+import { MessageManagerService as MessageManager } from './message-manager.service';
+import { MessageSeverity } from './message-severity';
 
-describe("Test the MessageManager service", () => {
+describe('Test the MessageManager service', () => {
   let messages: Message[] = null;
   let messageManager: MessageManager = null;
 
@@ -14,8 +14,8 @@ describe("Test the MessageManager service", () => {
     });
   });
 
-  it("should add a message (no entity info)", () => {
-    const text: string = "this is a message";
+  it('should add a message (no entity info)', () => {
+    const text = 'this is a message';
     const severity: MessageSeverity = MessageSeverity.WARN;
 
     messageManager.addMessage(text, severity);
@@ -29,12 +29,12 @@ describe("Test the MessageManager service", () => {
     expect(message.entityField).toEqual(null);
   });
 
-  it("should add a message (with entity info)", () => {
-    const text: string = "this is a message";
+  it('should add a message (with entity info)', () => {
+    const text = 'this is a message';
     const severity: MessageSeverity = MessageSeverity.WARN;
-    const entity: string = "Foo";
-    const entityKey: number = 123;
-    const entityField: string = "Bar";
+    const entity = 'Foo';
+    const entityKey = 123;
+    const entityField = 'Bar';
 
     messageManager.addMessage(text, severity, entity, entityKey, entityField);
 
@@ -47,18 +47,18 @@ describe("Test the MessageManager service", () => {
     expect(message.entityField).toEqual(entityField);
   });
 
-  it("should add multiple messages from a DTO array", () => {
+  it('should add multiple messages from a DTO array', () => {
     const dto: any[] = [
       {
-        text: "this is a message",
-        severity: "WARN"
+        text: 'this is a message',
+        severity: 'WARN'
       },
       {
-        text: "this is an entity message",
-        severity: "ERROR",
-        entity: "Foo",
+        text: 'this is an entity message',
+        severity: 'ERROR',
+        entity: 'Foo',
         entityKey: 123,
-        entityField: "Bar"
+        entityField: 'Bar'
       }
     ];
 
@@ -66,21 +66,21 @@ describe("Test the MessageManager service", () => {
 
     expect(messages.length).toEqual(2);
     const message1: Message = messages[0];
-    expect(message1.text).toEqual("this is a message");
+    expect(message1.text).toEqual('this is a message');
     expect(message1.severity).toEqual(MessageSeverity.WARN);
     expect(message1.entity).toEqual(null);
     expect(message1.entityKey).toEqual(null);
     expect(message1.entityField).toEqual(null);
     const message2: Message = messages[1];
-    expect(message2.text).toEqual("this is an entity message");
+    expect(message2.text).toEqual('this is an entity message');
     expect(message2.severity).toEqual(MessageSeverity.ERROR);
-    expect(message2.entity).toEqual("Foo");
+    expect(message2.entity).toEqual('Foo');
     expect(message2.entityKey).toEqual(123);
-    expect(message2.entityField).toEqual("Bar");
+    expect(message2.entityField).toEqual('Bar');
   });
 
-  it("should clear messages", () => {
-    const text: string = "this is a message";
+  it('should clear messages', () => {
+    const text = 'this is a message';
     const severity: MessageSeverity = MessageSeverity.WARN;
 
     messageManager.addMessage(text, severity);
@@ -92,18 +92,18 @@ describe("Test the MessageManager service", () => {
     expect(messages.length).toEqual(0);
   });
 
-  it("should retrieve only entity messages", () => {
+  it('should retrieve only entity messages', () => {
     const dto: any[] = [
       {
-        text: "this is a message",
-        severity: "WARN"
+        text: 'this is a message',
+        severity: 'WARN'
       },
       {
-        text: "this is an entity message",
-        severity: "ERROR",
-        entity: "Foo",
+        text: 'this is an entity message',
+        severity: 'ERROR',
+        entity: 'Foo',
         entityKey: 123,
-        entityField: "Bar"
+        entityField: 'Bar'
       }
     ];
 
@@ -114,10 +114,10 @@ describe("Test the MessageManager service", () => {
 
     expect(entityMessages.length).toEqual(1);
     const message: Message = entityMessages[0];
-    expect(message.text).toEqual("this is an entity message");
+    expect(message.text).toEqual('this is an entity message');
     expect(message.severity).toEqual(MessageSeverity.ERROR);
-    expect(message.entity).toEqual("Foo");
+    expect(message.entity).toEqual('Foo');
     expect(message.entityKey).toEqual(123);
-    expect(message.entityField).toEqual("Bar");
+    expect(message.entityField).toEqual('Bar');
   });
 });

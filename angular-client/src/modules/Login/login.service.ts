@@ -1,7 +1,8 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
 @Injectable()
 export class LoginService {
-    loggedIn: boolean = false;
-    showLogin: boolean = false;
-};
+  loggedIn = false;
+  showLogin = false;
+  jwt: string = null;
+}

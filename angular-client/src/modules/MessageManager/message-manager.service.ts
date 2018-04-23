@@ -1,10 +1,10 @@
-import { Injectable } from "@angular/core";
-import { Message } from "./message";
-import { MessageSeverity } from "./message-severity";
-import { populateClassInstanceFromDto } from "../Utilities/utilityMethods";
+import { Injectable } from '@angular/core';
+import { Message } from './message';
+import { MessageSeverity } from './message-severity';
+import { populateClassInstanceFromDto } from '../Utilities/utilityMethods';
 
 @Injectable()
-export class MessageManager {
+export class MessageManagerService {
   private messages: Message[] = [];
   private messageListener: (messages: Message[]) => void;
 

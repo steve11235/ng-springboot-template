@@ -1,14 +1,10 @@
-import { NgModule } from "@angular/core";
-import { HttpClient } from "selenium-webdriver/http";
+import { NgModule } from '@angular/core';
 
-import { RestCommService } from "./rest-comm.service";
+import { RestCommService } from './rest-comm.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
-    imports: [
-        HttpClient
-    ],
-    providers: [
-        RestCommService
-    ]
+  imports: [HttpClientModule],
+  providers: [RestCommService]
 })
-export class RestCommModule {};
+export class RestCommModule {}

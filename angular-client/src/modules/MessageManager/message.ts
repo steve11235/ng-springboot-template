@@ -1,13 +1,13 @@
-import { MessageSeverity } from "./message-severity";
+import { MessageSeverity } from './message-severity';
 
 export class Message {
-  private _text: string = "";
+  private _text = '';
   private _severity: MessageSeverity = MessageSeverity.INFO;
-  private _sequence: number = 0;
+  private _sequence = 0;
   private _entity: string = null;
   private _entityKey: number = null;
   private _entityField: string = null;
-  private __sealed: boolean = false;
+  private __sealed = false;
 
   get text() {
     return this._text;
@@ -22,21 +22,24 @@ export class Message {
   }
 
   /**
-   * Return the optional entity associated with this message. Together with entityKey and entityField, this allows correlation of a message to template field.
+   * Return the optional entity associated with this message. Together with entityKey and entityField, this allows correlation of a message
+   * to a template field.
    */
   get entity() {
     return this._entity;
   }
 
   /**
-   * Return the optional entity key associated with this message. Together with entity and entityField, this allows correlation of a message to template field.
+   * Return the optional entity key associated with this message. Together with entity and entityField, this allows correlation of a message
+   * to a template field.
    */
   get entityKey() {
     return this._entityKey;
   }
 
   /**
-   * Return the optional entity field associated with this message. Together with entity and entityKey, this allows correlation of a message to template field.
+   * Return the optional entity field associated with this message. Together with entity and entityKey, this allows correlation of a
+   * message to a template field.
    */
   get entityField() {
     return this._entityField;
@@ -48,7 +51,7 @@ export class Message {
 
   set text(newText: string) {
     if (this.__sealed) {
-      throw "set text called when sealed.";
+      throw new Error('set text called when sealed.');
     }
 
     this._text = newText;
@@ -56,7 +59,7 @@ export class Message {
 
   set severity(newSeverity: MessageSeverity | string) {
     if (this.__sealed) {
-      throw "set severity called when sealed.";
+      throw new Error('set severity called when sealed.');
     }
 
     if (newSeverity instanceof MessageSeverity) {
@@ -65,18 +68,18 @@ export class Message {
       return;
     }
 
-    if (typeof newSeverity === "string") {
+    if (typeof newSeverity === 'string') {
       this._severity = MessageSeverity.retrieveValueFromLabel(newSeverity);
 
       return;
     }
 
-    throw "Unknown type passed to set severity: " + newSeverity;
+    throw new Error('Unknown type passed to set severity: ' + newSeverity);
   }
 
   set sequence(newSequence: number) {
     if (this.__sealed) {
-      throw "set sequence called when sealed.";
+      throw new Error('set sequence called when sealed.');
     }
 
     this._sequence = newSequence;
@@ -84,7 +87,7 @@ export class Message {
 
   set entity(newEntity: string) {
     if (this.__sealed) {
-      throw "set entity called when sealed.";
+      throw new Error('set entity called when sealed.');
     }
 
     this._entity = newEntity;
@@ -92,7 +95,7 @@ export class Message {
 
   set entityKey(newEntityKey: number) {
     if (this.__sealed) {
-      throw "set entity key called when sealed.";
+      throw new Error('set entity key called when sealed.');
     }
 
     this._entityKey = newEntityKey;
@@ -100,7 +103,7 @@ export class Message {
 
   set entityField(newEntityField: string) {
     if (this.__sealed) {
-      throw "set entity field called when sealed.";
+      throw new Error('set entity field called when sealed.');
     }
 
     this._entityField = newEntityField;

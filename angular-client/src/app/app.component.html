@@ -1,4 +1,4 @@
-<login *ngIf="loginService.showLogin"></login>
+<app-login *ngIf="loginService.showLogin"></app-login>
 <div class="leftContainer flexContainer">
     <div class="logoArea fixedHeight">
         <img src="../assets/logo.png" class="logo" />
@@ -13,10 +13,10 @@
 <div class="rightContainer flexContainer">
     <div class="titleArea fixedHeight">
         <span class="title">{{title}}</span>
-        <clock class="clock"></clock>
+        <app-clock class="clock"></app-clock>
     </div>
-    <message-manager class="messageManager fixedHeight">
-    </message-manager>
+    <app-message-manager class="messageManager fixedHeight">
+    </app-message-manager>
     <div class="fillHeight">
         <router-outlet></router-outlet>
     </div>

@@ -1,17 +1,15 @@
-import { Component } from "@angular/core";
-import { LoginService } from "../../modules/Login/login.service";
+import { Component } from '@angular/core';
+import { LoginService } from '../../modules/Login/login.service';
+import { AppConfigService } from '../../modules/App/app-config.service';
 
-@Component(
-    {
-        selector: "home",
-        templateUrl: "./home.component.html"
-    }
-)
+@Component({
+  selector: 'app-home',
+  templateUrl: './home.component.html'
+})
 export class HomeComponent {
+  constructor(public appConfig: AppConfigService, public login: LoginService) {}
 
-    constructor(public loginService: LoginService) {}
-
-    handleLogin() {
-        this.loginService.showLogin = true;
-      }
+  handleLogin() {
+    this.login.showLogin = true;
+  }
 }

@@ -102,6 +102,29 @@ public final class MessageManager {
 	}
 
 	/**
+	 * Add an Info severity message with entity fields.
+	 * <p>
+	 * Info severity indicates that a normal condition occurred.
+	 * 
+	 * @param messageTextParm
+	 *            message text with optional replacement markers (typically %1$s)
+	 * @param entityParm
+	 *            entity name, typically the entity class name
+	 * @param entityKeyParm
+	 *            row key
+	 * @param entityFieldParm
+	 *            field name
+	 * @param replacementsParm
+	 *            zero to many replacements (do not pass null)
+	 * @return the formatted text
+	 * @see {@link java.util.Formatter}, {@link String#format(String, Object...)}
+	 */
+	public static String addInfoEntity(final String messageTextParm, final String entityParm, final long entityKeyParm, final String entityFieldParm,
+			final Object... replacementsParm) {
+		return threadLocal.get().addMessage(messageTextParm, entityParm, entityKeyParm, entityFieldParm, Severity.INFO, replacementsParm);
+	}
+
+	/**
 	 * Add a Warn severity message.
 	 * <p>
 	 * Warn severity indicates that an abnormal condition occurred that did not prevent the request from completing normally.
@@ -115,6 +138,29 @@ public final class MessageManager {
 	 */
 	public static String addWarn(final String messageTextParm, final Object... replacementsParm) {
 		return threadLocal.get().addMessage(messageTextParm, Severity.WARN, replacementsParm);
+	}
+
+	/**
+	 * Add a Warn severity message with entity fields.
+	 * <p>
+	 * Warn severity indicates that an abnormal condition occurred that did not prevent the request from completing normally.
+	 * 
+	 * @param messageTextParm
+	 *            message text with optional replacement markers (typically %1$s)
+	 * @param entityParm
+	 *            entity name, typically the entity class name
+	 * @param entityKeyParm
+	 *            row key
+	 * @param entityFieldParm
+	 *            field name
+	 * @param replacementsParm
+	 *            zero to many replacements (do not pass null)
+	 * @return the formatted text
+	 * @see {@link java.util.Formatter}, {@link String#format(String, Object...)}
+	 */
+	public static String addWarnEntity(final String messageTextParm, final String entityParm, final long entityKeyParm, final String entityFieldParm,
+			final Object... replacementsParm) {
+		return threadLocal.get().addMessage(messageTextParm, entityParm, entityKeyParm, entityFieldParm, Severity.WARN, replacementsParm);
 	}
 
 	/**
@@ -134,6 +180,29 @@ public final class MessageManager {
 	}
 
 	/**
+	 * Add an Error severity message with entity fields.
+	 * <p>
+	 * Error severity indicates that some condition, typically invalid input data, prevented the request from completing normally.
+	 * 
+	 * @param messageTextParm
+	 *            message text with optional replacement markers (typically %1$s)
+	 * @param entityParm
+	 *            entity name, typically the entity class name
+	 * @param entityKeyParm
+	 *            row key
+	 * @param entityFieldParm
+	 *            field name
+	 * @param replacementsParm
+	 *            zero to many replacements (do not pass null)
+	 * @return the formatted text
+	 * @see {@link java.util.Formatter}, {@link String#format(String, Object...)}
+	 */
+	public static String addErrorEntity(final String messageTextParm, final String entityParm, final long entityKeyParm, final String entityFieldParm,
+			final Object... replacementsParm) {
+		return threadLocal.get().addMessage(messageTextParm, entityParm, entityKeyParm, entityFieldParm, Severity.ERROR, replacementsParm);
+	}
+
+	/**
 	 * Add an System severity message using the standard application failure message.
 	 * <p>
 	 * <b>Warning:</b> System severity indicates that the request was interrupted by an internal error. All messages that have severity less than
@@ -147,24 +216,7 @@ public final class MessageManager {
 	 * @see {@link java.util.Formatter}, {@link String#format(String, Object...)}
 	 */
 	public static String addSystem() {
-		return addSystem(StandardMessages.APPLICATION_FAILURE);
-	}
-
-	/**
-	 * Add an System severity message.
-	 * <p>
-	 * <b>Warning:</b> System severity indicates that the request was interrupted by an internal error. All messages that have severity less than
-	 * System will be discarded, as the state of the request is now invalid.
-	 * 
-	 * @param messageTextParm
-	 *            message text with optional replacement markers (typically %1$s)
-	 * @param replacementsParm
-	 *            zero to many replacements (do not pass null)
-	 * @return the formatted text
-	 * @see {@link java.util.Formatter}, {@link String#format(String, Object...)}
-	 */
-	public static String addSystem(final String messageTextParm, final Object... replacementsParm) {
-		return threadLocal.get().addMessage(messageTextParm, Severity.SYSTEM, replacementsParm);
+		return threadLocal.get().addMessage("A service application failure occurred.", Severity.SYSTEM);
 	}
 
 	/**

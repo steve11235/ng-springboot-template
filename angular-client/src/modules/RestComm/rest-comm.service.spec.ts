@@ -1,26 +1,56 @@
 import { AppConfig } from '../App/app.config';
 import { RestCommService } from './rest-comm.service';
+import { HttpHeaders, HttpParams, HttpClient, HttpHandler, HttpXhrBackend, XhrFactory } from '@angular/common/http';
 
-const testUrl: string = "localhost:8080/rs/";
-const APP_CONFIG: AppConfig = new AppConfig("RestComm Testing", testUrl);
+describe('buildRequestOptions tests', () => {
+  it('should produce a full options', () => {
+    const queryParams: any = {
+      key1: 'value!@#',
+      key2: 'value$%^'
+    };
 
-let restCommService: RestCommService;
+    const options: any = new RestCommService(null, null, null, null).buildRequestOptions(
+      'http://localhost:8080',
+      'foo.bar.baz',
+      queryParams
+    );
 
-describe("RestCommService tests", () => {
-    beforeEach(() => {
-        this.restCommService = new RestCommService(null, null, APP_CONFIG);
-    });
+    const headers: HttpHeaders = options.headers;
+    const headersString: string = headers
+      .keys()
+      .map(key => key.concat(': ', headers.get(key)))
+      .join(', ');
 
-    it("should produce a URL with query params", () => {
-        const relativeUrl: string = "entity";
-        const queryParams: any = {
-            key1: "value!@#",
-            key2: "value$%^"
-        };
-        const fullUrl: string = this.restCommService.assembleFullUrl(relativeUrl, queryParams);
+    expect(headersString).toEqual(
+      'Accept: application/json, Accept-Charset: utf-8, Host: localhost:8080, Authorization: bearer foo.bar.baz'
+    );
 
-        expect(fullUrl).toEqual("localhost:8080/rs/entitykey1=value!%40%23&key2=value%24%25%5E");
+    const params: HttpParams = options.params;
+    const paramsString: string = params
+      .keys()
+      .map(key => key.concat(': ', params.get(key)))
+      .join(', ');
 
-        console.log(fullUrl);
-    });
+    expect(paramsString).toEqual('key1: value!@#, key2: value$%^');
+  });
+
+  it('should produce an options with no authorization, query params', () => {
+    const queryParams: any = {
+      key1: 'value!@#',
+      key2: 'value$%^'
+    };
+
+    const options: any = new RestCommService(null, null, null, null).buildRequestOptions('http://localhost:8080', null, null);
+
+    const headers: HttpHeaders = options.headers;
+    const headersString: string = headers
+      .keys()
+      .map(key => key.concat(': ', headers.get(key)))
+      .join(', ');
+
+    expect(headersString).toEqual('Accept: application/json, Accept-Charset: utf-8, Host: localhost:8080');
+
+    const params: HttpParams = options.params;
+    expect(params).toEqual(undefined);
+  });
 });

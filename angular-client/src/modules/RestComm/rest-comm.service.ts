@@ -1,35 +1,98 @@
-import { Injectable } from "@angular/core";
-import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
 
-import { LoginService } from "../Login/login.service";
-import { AppConfig } from "../App/app.config";
+import { LoginService } from '../Login/login.service';
+import { AppConfigService } from '../App/app-config.service';
+import { MessageManagerService as MessageManager } from '../MessageManager/message-manager.service';
+import { MessageSeverity } from '../MessageManager/message-severity';
+
+const BASE_HTTP_HEADERS: HttpHeaders = new HttpHeaders();
 
 @Injectable()
 export class RestCommService {
-  constructor(private httpClient: HttpClient, private loginService: LoginService, private appConfig: AppConfig) {}
+  public static MESSAGE_SEVERITY_ERROR = 'Message severity of Error or higher.';
+
+  private processMessagesBound = this.processMessages.bind(this);
+
+  constructor(
+    private httpClient: HttpClient,
+    private appConfig: AppConfigService,
+    private loginService: LoginService,
+    private messageManager: MessageManager
+  ) {}
 
   /**
-   * Get an array of DTO from the host.
+   * Return a cold Observable<any> that returns a DTO on success. Note that messages will be stripped out from the returned DTO and
+   * processed before reaching the subscriber. A MESSAGE_SEVERITY_ERROR is thrown if the messages contain a severity of ERROR or SYSTEM.
    *
-   * @param url required, relative URL to the resource desired
-   * @param success required, callback if the request was successful (dto may be an empty array)
-   * @param fail required callback if the request failed (error will be a standard string)
+   * @param resourcePath required, path to the resource, relative to the service path
    * @param queryParms optional, pass a simple object whose fields will be added to the URL as query parameters (do NOT encode values)
    */
-  public list(url: string, success: (dto: any[]) => void, fail: (error: string) => void, queryParams?: any): void {
-    const fullUrl: string = this.assembleFullUrl(url, queryParams);
+  public list(resourcePath: string, queryParams?: any): Observable<any> {
+    const fullUrl: string = this.appConfig.hostUrl.concat(this.appConfig.servicePath, resourcePath);
+    const options: any = this.buildRequestOptions(this.appConfig.hostUrl, this.loginService.jwt, queryParams);
+
+    const observable: Observable<any> = this.httpClient.get(fullUrl, options).map((dto: any) => this.processMessagesBound(dto));
+
+    return observable;
   }
 
-  public assembleFullUrl(url: string, queryParams: any): string {
-    let queryString: string = "";
+  /**
+   * Return an options object containing HttpHeaders and, optionally, HttpParams.
+   *
+   * @param hostUrl required
+   * @param jwt optional
+   * @param queryParams optional
+   */
+  public buildRequestOptions(hostUrl: string, jwt: string, queryParams: any): any {
+    const options: any = {};
+
+    // Remove the method from the host URL
+    const hostName: string = hostUrl.slice(hostUrl.indexOf('://') + 3);
+
+    let headers: HttpHeaders = new HttpHeaders()
+      .set('Accept', 'application/json')
+      .set('Accept-Charset', 'utf-8')
+      .set('Host', hostName);
+    if (jwt) {
+      headers = headers.set('Authorization', 'bearer'.concat(' ', jwt));
+    }
+    options.headers = headers;
+
     if (queryParams) {
-      queryString = Object.keys(queryParams)
-        .map(key => key.concat("=", encodeURIComponent(queryParams[key])))
-        .join("&");
+      // As of April 2018, passing queryParams to constructor did not work
+      let httpParams: HttpParams = new HttpParams();
+      for (const key of Object.keys(queryParams)) {
+        httpParams = httpParams.set(key, queryParams[key]);
+      }
+      options.params = httpParams;
     }
 
-    const fullUrl: string = this.appConfig.serviceUrl.concat(url, queryString);
+    return options;
+  }
 
-    return fullUrl;
+  /**
+   * Process messages from the DTO. Remove the messages property, return the DTO. Throw an error if the message severity is ERROR or SYSTEM.
+   *
+   * @param dto required the DTO generated from the JSON returned from the service
+   */
+  public processMessages(dto: any): any {
+    const messages: any = dto.messages;
+    const noMessagesDto: any = dto;
+    delete noMessagesDto.messages;
+
+    if (!messages) {
+      throw new Error('Response DTO did not contain messages.');
+    }
+
+    this.messageManager.addMessages(messages);
+
+    if (MessageSeverity.isErrorSeverity(messages.maxSeverity)) {
+      throw new Error(RestCommService.MESSAGE_SEVERITY_ERROR);
+    }
+
+    return noMessagesDto;
   }
 }

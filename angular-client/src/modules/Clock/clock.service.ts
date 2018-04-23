@@ -3,12 +3,11 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class ClockService {
-
-  private lastSecond: number = 0;
+  private lastSecond = 0;
 
   // Emits the date in millis every 10 millis
   private timerObservable: Observable<number> = Observable.create(observer => {
-    let timerInterval = setInterval(() => {
+    const timerInterval = setInterval(() => {
       observer.next(Date.now());
     }, 10);
   });
@@ -45,17 +44,17 @@ export class ClockService {
   // Usable for UI animation
   subscribeToTimer(callback: (dateAsMillis: number) => void): void {
     this.timerObservable.subscribe(callback);
-  };
+  }
 
   // Called every second
   // Usable for a clock displaying seconds
   subscribeToSeconds(callback: (dateAsMillis: number) => void): void {
     this.secondObservable.subscribe(callback);
-  };
+  }
 
   // Called every minuteObservable
   // Usable for a clock displaying minutes
   subscribeToMinutes(callback: (dateAsMillis: number) => void): void {
     this.minuteObservable.subscribe(callback);
-  };
+  }
 }

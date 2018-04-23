@@ -14,6 +14,9 @@ public final class Message implements Comparable<Message> {
 	private final String text;
 	private final Severity severity;
 	private final int sequence;
+	private final String entity;
+	private final long entityKey;
+	private final String entityField;
 
 	/**
 	 * Restricted constructor
@@ -28,6 +31,32 @@ public final class Message implements Comparable<Message> {
 		text = textParm;
 		severity = severityParm;
 		sequence = sequenceParm;
+
+		entity = null;
+		entityKey = 0;
+		entityField = null;
+	}
+
+	/**
+	 * Restricted constructor, with entity fields
+	 * 
+	 * @param textParm
+	 * @param severityParm
+	 */
+	Message(final String textParm, final Severity severityParm, final int sequenceParm, final String entityParm, final long entityKeyParm,
+			final String entityFieldParm) {
+		ValidationUtility.checkStringNotBlank("Message text is blank", textParm);
+		ValidationUtility.checkObjectNotNull("Message severity is null.", severityParm);
+		ValidationUtility.checkStringNotBlank("Message entity is blank", textParm);
+		ValidationUtility.checkStringNotBlank("Message entity field is blank", textParm);
+
+		text = textParm;
+		severity = severityParm;
+		sequence = sequenceParm;
+
+		entity = entityParm;
+		entityKey = entityKeyParm;
+		entityField = entityFieldParm;
 	}
 
 	public String getText() {
@@ -40,6 +69,18 @@ public final class Message implements Comparable<Message> {
 
 	int getSequence() {
 		return sequence;
+	}
+
+	public String getEntity() {
+		return entity;
+	}
+
+	public long getEntityKey() {
+		return entityKey;
+	}
+
+	public String getEntityField() {
+		return entityField;
 	}
 
 	@Override

@@ -1,17 +1,17 @@
-import { Component } from "@angular/core";
-import { LoginService } from "./login.service";
+import { Component } from '@angular/core';
+import { LoginService } from './login.service';
 
 @Component({
-  selector: "login",
-  templateUrl: "./login.component.html",
-  styleUrls: ["./login.component.css"]
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-    errorMessage: string = "";
+  errorMessage = '';
 
-    constructor(public loginService: LoginService) {}
+  constructor(public loginService: LoginService) {}
 
-    handleCancel(): void {
-        this.loginService.showLogin = false;
-    }
+  handleCancel(): void {
+    this.loginService.showLogin = false;
+  }
 }

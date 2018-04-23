@@ -1,12 +1,12 @@
-import { Component } from "@angular/core";
-import { MessageManager } from "./message-manager.service";
-import { Message } from "./message";
-import { MessageSeverity } from "./message-severity";
+import { Component } from '@angular/core';
+import { MessageManagerService as MessageManager } from './message-manager.service';
+import { Message } from './message';
+import { MessageSeverity } from './message-severity';
 
 @Component({
-  selector: "message-manager",
-  templateUrl: "./message-manager.component.html",
-  styleUrls: ["./message-manager.component.css"]
+  selector: 'app-message-manager',
+  templateUrl: './message-manager.component.html',
+  styleUrls: ['./message-manager.component.css']
 })
 export class MessageManagerComponent {
   messages: Message[] = [];

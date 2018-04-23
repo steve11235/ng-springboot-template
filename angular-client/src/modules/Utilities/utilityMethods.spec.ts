@@ -1,16 +1,16 @@
-import { Message } from "../MessageManager/message";
-import { MessageSeverity } from "../MessageManager/message-severity";
-import { populateClassInstanceFromDto } from "./utilityMethods";
+import { Message } from '../MessageManager/message';
+import { MessageSeverity } from '../MessageManager/message-severity';
+import { populateClassInstanceFromDto } from './utilityMethods';
 
 // Use the Message class as a target to validate the utility
-describe("utilityMethods testing", () => {
-  it("should update the Message correctly", () => {
+describe('utilityMethods testing', () => {
+  it('should update the Message correctly', () => {
     const message: Message = new Message();
     const dto: any = {
-      text: "This is the text.",
-      severity: "INFO",
+      text: 'This is the text.',
+      severity: 'INFO',
       sequence: 5,
-      other: "Other stuff not related to Message."
+      other: 'Other stuff not related to Message.'
     };
 
     populateClassInstanceFromDto(message, dto);
@@ -23,20 +23,20 @@ describe("utilityMethods testing", () => {
     expect(message.entityField === null);
   });
 
-  it("should seal the Message", () => {
+  it('should seal the Message', () => {
     const message: Message = new Message();
     const dto: any = {
-      text: "This is the text.",
-      severity: "INFO",
+      text: 'This is the text.',
+      severity: 'INFO',
       sequence: 5,
-      other: "Other stuff not related to Message."
+      other: 'Other stuff not related to Message.'
     };
 
     populateClassInstanceFromDto(message, dto);
 
-    let errorThrown: boolean = false;
+    let errorThrown = false;
     try {
-      message.text = "try to change text";
+      message.text = 'try to change text';
     } catch (err) {
       errorThrown = true;
     }
