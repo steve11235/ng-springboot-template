@@ -109,6 +109,32 @@ textarea {
   font-size: 1.25em;
 }
 
+.floatContainer::after {
+  content: " ";
+  display: block;
+  height: 0;
+  clear: both;
+}
+
+.header-row-border {
+  border-top-style: solid;
+  border-top-width: thin;
+  border-top-color: var(--base-color-fade);
+  border-bottom-style: solid;
+  border-bottom-width: thin;
+  border-bottom-color: var(--base-color-fade);
+}
+
+.row-border {
+  border-bottom-style: solid;
+  border-bottom-width: thin;
+  border-bottom-color: var(--base-color-fade);
+}
+
+.clickable {
+  cursor: pointer;
+}
+
 .cell,
 .cell-heading {
   float: left;
@@ -123,25 +149,7 @@ textarea {
 .cell-heading {
   border-left-color: var(--base-color-fade);
   text-align: center;
-}
-
-.row-border {
-  border-bottom-style: solid;
-  border-bottom-width: thin;
-  border-bottom-color: var(--base-color-fade);
-}
-
-.cell-clickable {
-  text-align: center;
-  cursor: pointer;
-}
-
-.cell-not-clickable {
-  text-align: center;
-  color: var(--base-gray-fade);
-  cursor: default;
-  user-select: none;
-  pointer-events: none;
+  font-weight: bold;
 }
 
 .w1 {
@@ -184,13 +192,6 @@ span.block {
   display: inline-block;
 }
 
-.floatContainer::after {
-  content: " ";
-  display: block;
-  height: 0;
-  clear: both;
-}
-
 .button {
   display: inline-block;
   margin: 0 5px;
@@ -200,7 +201,7 @@ span.block {
   background: radial-gradient(white, var(--base-color-fade), var(--base-font-color) 95%);
   min-width: 4em;
   height: 1.75em;
-  line-height: 2em;
+  line-height: 1.75em;
   text-align: center;
   font-size: var(--base-font-size);
   font-weight: bold;

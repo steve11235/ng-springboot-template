@@ -6,12 +6,12 @@ import { AppComponent } from './app.component';
 import { MessageManagerModule } from '../modules/MessageManager/message-manager.module';
 import { ClockModule } from '../modules/Clock/clock.module';
 import { HomeModule } from './home/home.module';
-import { UsersModule } from './users/users.module';
-import { APP_ROUTES } from '../app.routing';
+import { APP_ROUTES } from './app.routing';
 import { LoginModule } from '../modules/Login/login.module';
 import { RestCommModule } from '../modules/RestComm/rest-comm.module';
 import { AppConfigService } from '../modules/App/app-config.service';
 import { APP_CONFIG_SERVICE } from './app-config-service-instance';
+import { UsersModule } from './users/users.module';
 @NgModule({
   declarations: [AppComponent],
   imports: [

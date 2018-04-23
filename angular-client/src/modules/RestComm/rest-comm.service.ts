@@ -54,8 +54,6 @@ export class RestCommService {
 
     let headers: HttpHeaders = new HttpHeaders()
       .set('Accept', 'application/json')
-      .set('Accept-Charset', 'utf-8')
-      .set('Host', hostName);
     if (jwt) {
       headers = headers.set('Authorization', 'bearer'.concat(' ', jwt));
     }
