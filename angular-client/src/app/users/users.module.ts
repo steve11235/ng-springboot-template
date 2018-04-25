@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { UsersComponent } from './users.component';
-import { USERS_ROUTES } from './uses.routing';
+import { USERS_ROUTES } from './users.routing';
+import { UserEditorComponent } from './user-editor-component';
 
 @NgModule({
-  declarations: [UsersComponent],
+  declarations: [UsersComponent, UserEditorComponent],
   imports: [
     CommonModule,
     FormsModule,

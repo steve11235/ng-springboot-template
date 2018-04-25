@@ -1,5 +1,5 @@
 :root {
-  --font-family: Arial, Helvetica, "Liberation Sans", sans-serif;
+  --font-family: Arial, Helvetica, 'Liberation Sans', sans-serif;
   --base-font-size: 1vw;
   --base-color: hsl(200, 100%, 37%);
   --base-color-fade: hsl(200, 50%, 75%);
@@ -36,19 +36,25 @@ div {
   box-sizing: border-box;
 }
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   margin: 0;
-  padding: .25em 0;
+  padding: 0.25em 0;
 }
 
 p {
   margin: 0;
-  padding: .25em 0;
+  padding: 0.25em 0;
 }
 
-.flexContainer {
+/* Ugly hack: List all app-foo; routed components ignore height 100% if not explicitly listed here */
+.flexContainer,
+app-users {
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
 .fixedHeight {
@@ -59,12 +65,16 @@ p {
   flex: auto;
 }
 
-.pad {
-  padding: .5em;
+.height100Pct {
+  height: 100%;
 }
 
-.autoScrollY {
-  overflow-y: auto;
+.pad {
+  padding: 0.5em;
+}
+
+.scrollY {
+  overflow-y: scroll;
 }
 
 .floatleft {
@@ -110,7 +120,7 @@ textarea {
 }
 
 .floatContainer::after {
-  content: " ";
+  content: ' ';
   display: block;
   height: 0;
   clear: both;

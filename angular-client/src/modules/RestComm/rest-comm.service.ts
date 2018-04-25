@@ -53,7 +53,7 @@ export class RestCommService {
     const hostName: string = hostUrl.slice(hostUrl.indexOf('://') + 3);
 
     let headers: HttpHeaders = new HttpHeaders()
-      .set('Accept', 'application/json')
+      .set('Accept', 'application/json');
     if (jwt) {
       headers = headers.set('Authorization', 'bearer'.concat(' ', jwt));
     }

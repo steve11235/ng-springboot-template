@@ -1,15 +1,21 @@
-<h1>Users</h1>
-<div class="float-container header-row-border">
+<h1 class="fixedHeight">Users</h1>
+<div class="fixedHeight float-container header-row-border">
     <span class="cell-heading w7">Login</span>
     <span class="cell-heading w5">Inactive</span>
     <span class="cell-heading w3">Admin</span>
     <span class="cell-heading w15">Name</span>
     <span class="cell-heading w10">Description</span>
 </div>
-<div class="float-container row-border clickable" tabindex="0" *ngFor="let user of userList" (click)="handleRowSelected(user)" (keyup.enter)="handleRowSelected(user)">
-    <span class="cell w7">{{user.login}}</span>
-    <span class="cell w5 center">{{user.deactivated ? 'Y' : ''}}</span>
-    <span class="cell w3 center">{{user.admin ? 'Y' : ''}}</span>
-    <span class="cell w15">{{user.fullName}}</span>
-    <span class="cell">{{user.description}}</span>
+<div class="fillHeight scrollY">
+    <div class="float-container row-border clickable" tabindex="0" *ngFor="let user of userList" (click)="handleRowSelected(user)"
+        (keyup.enter)="handleRowSelected(user)">
+        <span class="cell w7">{{user.login}}</span>
+        <span class="cell w5 center">{{user.deactivated ? 'Y' : ''}}</span>
+        <span class="cell w3 center">{{user.admin ? 'Y' : ''}}</span>
+        <span class="cell w15">{{user.fullName}}</span>
+        <span class="cell">{{user.description}}</span>
+    </div>
+</div>
+<div class="fixedHeight">
+    <router-outlet></router-outlet>
 </div>
